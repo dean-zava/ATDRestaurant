@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
 import {
     Collapse,
     Navbar,
@@ -15,17 +15,17 @@ class AppNavbar extends Component {
         isOpen: false
     }
 
+
     toggle = () => {
         this.setState({
             isOpen: !this.state.isOpen
         });
-
     }
 
     render() {
         return (
         <div>
-            <Navbar color="dark" dark expand="sm" className="mb-5">
+            <Navbar color="dark" dark expend="sm" className="mb-5">
                 <Container>
                     <NavbarBrand href="/">ShoppingList</NavbarBrand>
                     <NavbarToggler onClick={this.toggle} />

@@ -1,14 +1,14 @@
 import React from 'react';
-import AppNavbar from './components/AppNavBar';
-
-import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import AppNavbar from './components/AppNavbar';
+
 
 function App() {
   return (
     <div className="App">
-       <h1>Majeek</h1>
-       <AppNavbar/> 
+      <h1> Kaki App for Majeed </h1>
+      <AppNavbar />
     </div>
   );
 }
