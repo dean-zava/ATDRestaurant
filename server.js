@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 
 const config = {
     mongoURL: process.env.MONGO_URL || 'mongodb://localhost:27017/restaurants',
-    port: 8000
+    port: 5000
   };
   
   //setup database
@@ -28,6 +28,6 @@ const config = {
 // User Routes
 app.use('/api/Restaurants', Restaurants);
 
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log(`server started on port ${port}`));
