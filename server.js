@@ -1,23 +1,20 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-
-const Restaurants = require('./routes/api/Restaurants')
+const config = require('config');
 
 const app = express();
 
-app.use(bodyParser.json());
+app.use(express.json());
 
-const config = {
-    mongoURL: process.env.MONGO_URL || 'mongodb://localhost:27017/restaurants',
-    port: 5000
-  };
-  
+const db = config.get('mongoURI')
+
   //setup database
   mongoose.Promise = global.Promise;
   // MongoDB Connection
   if (process.env.NODE_ENV !== 'test') {
-    mongoose.connect(config.mongoURL, { useNewUrlParser: true }, (error) => {
+    mongoose.connect(db || process.env.MONGO_URL,
+      { useNewUrlParser: true, useCreateIndex: true },
+      (error) => {
       if (error) {
         console.error('Please make sure Mongodb is installed and running!');
         throw error;
@@ -26,7 +23,9 @@ const config = {
   }
 
 // User Routes
-app.use('/api/Restaurants', Restaurants);
+app.use('/api/Restaurants', require('./routes/api/Restaurants'));
+app.use('/api/Users', require('./routes/api/Users'));
+app.use('/api/Auth', require('./routes/api/Auth'));
 
 const port = process.env.PORT || 5000;
 
