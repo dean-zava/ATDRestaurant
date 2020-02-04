@@ -39,7 +39,7 @@ const RestaurantSchema = new Schema ({
     },
     location: {
         type: String,
-        required: true
+        default: "kossomo"
     },
     reviews: {
         type: [Object],

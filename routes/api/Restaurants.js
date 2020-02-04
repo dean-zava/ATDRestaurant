@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../../middleware/auth');
 
 //Rest modle
 const Restaurant = require('../../models/Restaurant');
@@ -16,8 +17,8 @@ router.get('/', (req, res) => {
 
 //@route    POST api/items/:id
 //@desc     Post a restaurant     
-//@access   Public
-router.post('/', (req, res) => {
+//@access   Private
+router.post('/', auth, (req, res) => {
     const newRest = new Restaurant({
         name: req.body.name,
         location: req.body.location
@@ -27,8 +28,8 @@ router.post('/', (req, res) => {
 
 //@route    DELETE api/items/:id
 //@desc     Delete a post restaurant     
-//@access   Public
-router.delete('/:id', (req, res) => {
+//@access   Private
+router.delete('/:id', auth, (req, res) => {
     Restaurant.findById(req.params.id)
     .then(restaurant => restaurant.remove().then(() => res.json({ success: true})))
     .catch(err => res.status(404).json({success: false})); 
