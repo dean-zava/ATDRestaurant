@@ -1,8 +1,8 @@
 ALL should be in the client directory
-* npm i redux react-redux redux-thunk
+* npm i redux react-redux redux-thunk axios react bootstrap react-dropzone
 * npm i axios
 
 server side:
 * npm remove body-parser
-* npm i bcryptjs
+* npm i bcryptjs express mongoose multer
 
