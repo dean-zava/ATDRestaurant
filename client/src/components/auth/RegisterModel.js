@@ -77,13 +77,10 @@ class RegisterModel extends Component {
         const { name, password, files, location } = this.state;
         console.log(`the file is ${files[0].name}`)
 
-        //TODO: delete
-        let location1 = 'fuckyoutoo'
         const newUser = {
             name,
             password,
-            location: location1
-            //location
+            location
         };
 
         this.props.register(newUser, files[0]);
@@ -142,6 +139,15 @@ class RegisterModel extends Component {
                                     name="password"
                                     id="password"
                                     placeholder="Password"
+                                    className="mb-3"
+                                    onChange={this.onChange}
+                                />
+                                 <Label for="location">Location</Label>
+                                <Input
+                                    type="location"
+                                    name="location"
+                                    id="location"
+                                    placeholder="location"
                                     className="mb-3"
                                     onChange={this.onChange}
                                 />
