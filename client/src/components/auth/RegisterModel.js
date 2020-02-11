@@ -11,6 +11,7 @@ import {
     NavLink,
     Alert
 } from 'reactstrap';
+import Dropzone from 'react-dropzone';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { register, get_username } from '../../actions/authActions'
@@ -21,7 +22,8 @@ class RegisterModel extends Component {
         modal: false,
         name: '',
         password: '',
-        msg: null
+        msg: null,
+        files: []
     };
 
     static propTypes = {
@@ -52,7 +54,8 @@ class RegisterModel extends Component {
     toggle = () => {
         this.props.clearErrors();
         this.setState({
-            modal: !this.state.modal
+            modal: !this.state.modal,
+            files: []
         });
     }
 
@@ -80,7 +83,18 @@ class RegisterModel extends Component {
         this.props.register(newUser);
     }
 
+    onDrop = (files) => {
+        this.setState({files})
+    };
+
+
     render() {
+        const files = this.state.files.map(file => (
+            <li key={file.name}>
+              {file.name} - {file.size} bytes
+            </li>
+          ));
+
         return (
             <div>
                 <NavLink onClick={this.toggle} href="#">
@@ -114,6 +128,21 @@ class RegisterModel extends Component {
                                     className="mb-3"
                                     onChange={this.onChange}
                                 />
+
+                                <Dropzone onDrop={this.onDrop}>
+                                    {({getRootProps, getInputProps}) => (
+                                    <section className="container">
+                                        <div {...getRootProps({className: 'dropzone'})}>
+                                        <input {...getInputProps()} />
+                                        <p>Drag and drop some files here, or click to select files</p>
+                                        </div>
+                                        <aside>
+                                        <h4>Files</h4>
+                                        <ul>{files}</ul>
+                                        </aside>
+                                    </section>
+                                    )}
+                                </Dropzone>
                                     
                                 <Button
                                     color="dark"
