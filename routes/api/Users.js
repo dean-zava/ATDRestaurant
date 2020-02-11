@@ -3,16 +3,40 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const config = require('config');
 const jwt = require('jsonwebtoken');
+var cors = require('cors');
+var multer = require('multer')
 
 //User modle
 const User = require('../../models/User');
 
+router.use(cors())
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+    cb(null, 'public')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' +file.originalname )
+  }
+})
+var upload = multer({ storage: storage }).single('file')
+
+router.post('/upload_pic',function(req, res) {
+    upload(req, res, function (err) {
+           if (err instanceof multer.MulterError) {
+               return res.status(500).json(err)
+           } else if (err) {
+               return res.status(500).json(err)
+           }
+      return res.status(200).send(req.file)
+
+    })
+});
 
 //@route    POST api/Users
 //@desc     Register new user     
 //@access   Public
 router.post('/', (req, res) => {
-    const { name, password } = req.body;
+    const { name, password, file, location } = req.body;
 
     if(!name || !password) {
         return res.status(400).json( { msg: 'Please enter all fields' } );
@@ -24,10 +48,16 @@ router.post('/', (req, res) => {
                 return res.status(400).json( { msg: 'User already exists' } );
             }
 
+            console.log(`the file is ${file}`)
+
             const newUser = new User({
                 name,
-                password
+                password,
+                file,
+                location
             });
+
+            // console.log(`new user is ${newUser}`)
 
             bcrypt.genSalt(10, (err, salt) => {
                 bcrypt.hash(newUser.password, salt, (err, hash) => {
@@ -46,7 +76,9 @@ router.post('/', (req, res) => {
                                         token,
                                         user: {
                                             id: user.id,
-                                            name: user.name
+                                            name: user.name,
+                                            file: user.file,
+                                            location: user.location
                                         }
                                     });
                                 });

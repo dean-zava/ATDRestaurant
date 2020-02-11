@@ -52,29 +52,38 @@ export const get_username = (name) => dispatch => {
 
 }
 
-export const register = ({ name, password }) => dispatch => {
+export const register = ({ name, password, location}, file) => dispatch => {
     const config = {
         headers: {
             'Content-Type': 'application/json'
         }
     }
 
-    const body = JSON.stringify({ name, password });
+    const data = new FormData() 
+    data.append('file', file)
+    axios.post('/api/users/upload_pic', data).
+        then(res => {
+    
+        console.log(`res is ${res.data.path}`);
 
-    axios.post('/api/users', body, config)
-        .then(res => dispatch({
-            type: REGISTER_SUCCESS,
-            payload: res.data
-        }))
-        .catch(err => {
-            dispatch(
-              returnErrors(err.response.data, err.response.status, 'REGISTER_FAIL')
-            );
-            dispatch({
-              type: REGISTER_FAIL
+        const file = res.data.path;
+        const body = JSON.stringify({ name, password, file, location });
+
+        axios.post('/api/users', body, config)
+            .then(res => dispatch({
+                type: REGISTER_SUCCESS,
+                payload: res.data
+            }))
+            .catch(err => {
+                dispatch(
+                returnErrors(err.response.data, err.response.status, 'REGISTER_FAIL')
+                );
+                dispatch({
+                type: REGISTER_FAIL
+                });
             });
-          });
-      };
+        })
+}
 
 export const login = ({ name, password }) => dispatch => {
         const config = {

@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { register, get_username } from '../../actions/authActions'
 import { clearErrors } from '../../actions/errorActions';
+var fs = require('fs');
 
 class RegisterModel extends Component {
     state = {
@@ -23,7 +24,8 @@ class RegisterModel extends Component {
         name: '',
         password: '',
         msg: null,
-        files: []
+        files: [],
+        location: ''
     };
 
     static propTypes = {
@@ -72,15 +74,19 @@ class RegisterModel extends Component {
     onSubmit = e => {
         e.preventDefault();
 
-        const { name, password } = this.state;
+        const { name, password, files, location } = this.state;
+        console.log(`the file is ${files[0].name}`)
 
-
+        //TODO: delete
+        let location1 = 'fuckyoutoo'
         const newUser = {
             name,
-            password
+            password,
+            location: location1
+            //location
         };
 
-        this.props.register(newUser);
+        this.props.register(newUser, files[0]);
     }
 
     onDrop = (files) => {

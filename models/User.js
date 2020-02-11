@@ -11,6 +11,14 @@ const UserSchema = new Schema ({
     password: {
         type: String,
         required: true
+    },
+    file: {
+        type: String,
+        required: true
+    },
+    location: {
+        type: String,
+        required: true
     }
 });
 
