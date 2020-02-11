@@ -1,6 +1,7 @@
 ALL should be in the client directory
 * npm i redux react-redux redux-thunk
 * npm i axios
+* npm i react-dropzone
 
 server side:
 * npm remove body-parser
