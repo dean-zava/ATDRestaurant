@@ -9,7 +9,8 @@ import {
     LOGIN_FAIL,
     LOGOUT_SUCCESS,
     REGISTER_SUCCESS,
-    REGISTER_FAIL
+    REGISTER_FAIL,
+    CLEAR_ERRORS
 } from './types';
 
 export const loadUser = () => (dispatch, getState) => {
@@ -26,6 +27,29 @@ export const loadUser = () => (dispatch, getState) => {
                 type: AUTH_ERROR
             });
         });
+}
+
+export const get_username = (name) => dispatch => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+    const body = JSON.stringify({ name });
+
+    axios.post('/api/users/query', body, config)
+        .then(res => dispatch({
+            type: CLEAR_ERRORS
+        }))
+        .catch(err => {
+            dispatch(
+            returnErrors(err.response.data, err.response.status, 'REGISTER_FAIL')
+            );
+            dispatch({
+            type: REGISTER_FAIL
+            });
+        });
+
 }
 
 export const register = ({ name, password }) => dispatch => {
@@ -52,7 +76,7 @@ export const register = ({ name, password }) => dispatch => {
           });
       };
 
-    export const login = ({ name, password }) => dispatch => {
+export const login = ({ name, password }) => dispatch => {
         const config = {
             headers: {
                 'Content-Type': 'application/json'

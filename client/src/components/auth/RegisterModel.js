@@ -13,7 +13,7 @@ import {
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { register } from '../../actions/authActions'
+import { register, get_username } from '../../actions/authActions'
 import { clearErrors } from '../../actions/errorActions';
 
 class RegisterModel extends Component {
@@ -35,7 +35,6 @@ class RegisterModel extends Component {
         const { error, isAuthenticated } = this.props;
         if(error !== prevProps.error) {
             if(error.id === 'REGISTER_FAIL') {
-                //TODO: comment in
                 this.setState({ msg: error.msg.msg });
             }
             else {
@@ -59,6 +58,12 @@ class RegisterModel extends Component {
 
     onChange = (e) => {
         this.setState({ [e.target.name]: e.target.value });
+    }
+
+    user_change = (e) => {
+        this.setState({ [e.target.name]: e.target.value });
+
+        this.props.get_username(e.target.value);
     }
 
     onSubmit = e => {
@@ -98,7 +103,7 @@ class RegisterModel extends Component {
                                     id="name"
                                     placeholder="Name"
                                     className="mb-3"
-                                    onChange={this.onChange}
+                                    onChange={this.user_change}
                                 />
                                 <Label for="passowrd">Password</Label>
                                 <Input
@@ -131,5 +136,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { register, clearErrors }
+    { register, clearErrors, get_username }
     )(RegisterModel);

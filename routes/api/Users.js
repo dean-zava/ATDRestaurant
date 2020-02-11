@@ -59,4 +59,17 @@ router.post('/', (req, res) => {
         })
 });
 
+router.post('/query', (req, res) => {
+    const { name } = req.body;
+
+    User.findOne({ name })
+    .then(user => {
+        if(user) {
+            return res.status(400).json( { msg: 'User already exists' } );
+        }
+        else {
+            return res.json( { msg: 'User doesnt exists' } );
+        }
+    });
+})
 module.exports = router;
