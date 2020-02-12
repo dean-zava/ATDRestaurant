@@ -4,6 +4,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { connect } from 'react-redux';
 import { getItems, deleteItem } from '../actions/itemActions';
 import PropTypes from 'prop-types';
+import ItemModal from './RestaurantModel';
 
 class Restaurant extends Component {
     static propTypes = {
@@ -25,6 +26,7 @@ class Restaurant extends Component {
         const { items } = this.props.item;
         return(
             <Container>
+                    <ItemModal/>
                     <ListGroup>
                         <TransitionGroup className="Reviews">
                             {items.map(({ _id, name }) => (
