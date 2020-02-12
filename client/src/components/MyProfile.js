@@ -16,14 +16,21 @@ class MyProfile extends Component {
 
     render() {
         const { isAuthenticated, user } = this.props.auth;
-        console.log(`isAuthenticated: ${isAuthenticated}`)
-        console.log(`user: ${user}`)
 
         return(
+            <div>
                 <ListGroup>
                 <ListGroupItem>{user ? `username: ${user.name}` : '' }</ListGroupItem>
                 <ListGroupItem>{user ? `location: ${user.location}` : '' }</ListGroupItem>
               </ListGroup>
+              
+              <Button
+              color="dark"
+              style={{margin: '1rem'}}
+              onClick={this.toggle}
+              >Edit
+              </Button>
+              </div>
             );
     }
 }
