@@ -89,8 +89,8 @@ class RegisterModel extends Component {
     onDrop = (files) => {
         let filename = files[0].name
 
-        if(!filename.endsWith('.jpeg') && !filename.endsWith('.png')) {
-            this.setState({ msg: "only .jpeg or .png files are supported",
+        if(!filename.endsWith('.jpg') && !filename.endsWith('.png')) {
+            this.setState({ msg: "only .jpg or .png files are supported",
                             files: []
                         });
         }

@@ -26,6 +26,7 @@ const db = config.get('mongoURI')
 app.use('/api/Restaurants', require('./routes/api/Restaurants'));
 app.use('/api/Users', require('./routes/api/Users'));
 app.use('/api/Auth', require('./routes/api/Auth'));
+app.use(express.static(__dirname+'/public'))
 
 const port = process.env.PORT || 5000;
 

@@ -10,8 +10,23 @@ import {
     LOGOUT_SUCCESS,
     REGISTER_SUCCESS,
     REGISTER_FAIL,
-    CLEAR_ERRORS
+    CLEAR_ERRORS,
+    IMAGE_SUCCESS
 } from './types';
+
+export const get_pic = (username) => dispatch => {
+    
+    axios.get('/api/users/get_pic', {
+        params: {
+            user: username
+        }
+
+    }).then(res => dispatch({
+            type: IMAGE_SUCCESS,
+            payload: res.data
+    }))
+}
+
 
 export const loadUser = () => (dispatch, getState) => {
     dispatch({ type: USER_LOADING });
@@ -22,7 +37,7 @@ export const loadUser = () => (dispatch, getState) => {
             payload: res.data
         }))
         .catch(err => {
-            dispatch(returnErrors(err.response.dta, err.response.status));
+            dispatch(returnErrors(err.response.data, err.response.status));
             dispatch({
                 type: AUTH_ERROR
             });

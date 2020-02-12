@@ -32,6 +32,11 @@ router.post('/upload_pic',function(req, res) {
     })
 });
 
+router.get('/get_pic', (req, res) => {
+    Users.findOne({name: req.query.user}).
+        then(user => res.json({file: user.file}));
+})
+
 //@route    POST api/Users
 //@desc     Register new user     
 //@access   Public
