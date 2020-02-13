@@ -12,7 +12,9 @@ import { Container,
     Form,
     FormGroup,
     Label,
-    Input
+    Input,
+    Col,
+    Row
 } from 'reactstrap'
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { connect } from 'react-redux';
@@ -26,7 +28,12 @@ import StarRatingComponent from 'react-star-rating-component';
 class Restaurant extends Component {
     state = {
         modal: false,
-        raiting: 2
+        bathroom_raiting: 3,
+        staff_kindness: 3,
+        cleanliness: 3,
+        drive_thru: 3,
+        delivery_speed: 3,
+        food_quality: 3
     }
 
     static propTypes = {
@@ -49,14 +56,26 @@ class Restaurant extends Component {
         });
     }
 
-    onStarClick(nextValue, prevValue, name) {
-        this.setState({rating: nextValue});
+    onBathroomClick(nextValue, prevValue, name) {
+        this.setState({bathroom_raiting: nextValue});
+      }
+
+    onStaffClick(nextValue, prevValue, name) {
+        this.setState({staff_kindness: nextValue});
+      }
+
+    onCleanlinessClick(nextValue, prevValue, name) {
+        this.setState({cleanliness: nextValue});
+      }
+
+    onFoodQualityClick(nextValue, prevValue, name) {
+        this.setState({food_quality: nextValue});
       }
 
     render() {
         
         const { items } = this.props.item;
-        const { rating } = this.state;
+        const { bathroom_raiting, staff_kindness, cleanliness, food_quality } = this.state;
         return(
             <Container>
                     <ItemModal/>
@@ -84,16 +103,62 @@ class Restaurant extends Component {
                                         <ModalBody>
                                             <Form onSubmit={this.onSubmit}>
                                                 <FormGroup>
-                                                    <Label for="item">Review</Label>
+                                                    
+                                                <Container>
+                                                    <Row><Col> <Label for="item">Review</Label> </Col></Row>
+                                                    <Row>
+                                                    <Col><Label for="Bathroom">Bathroom Quality:</Label></Col>
+                                                <Col>
                                                 <div>   
-                                                    {/* <h1 font="2">Rating from state: {rating}</h1> */}
                                                     <StarRatingComponent 
                                                     name="rate1" 
                                                     starCount={5}
-                                                    value={rating}
-                                                    onStarClick={this.onStarClick.bind(this)}
+                                                    value={bathroom_raiting}
+                                                    onStarClick={this.onBathroomClick.bind(this)}
                                                     />
                                                 </div>
+                                                </Col>
+                                                </Row>
+                                                <Row>
+                                                    <Col><Label for="Staff Kindness">Staff Kindness:</Label></Col>
+                                                <Col>
+                                                <div>   
+                                                    <StarRatingComponent 
+                                                    name="rate1" 
+                                                    starCount={5}
+                                                    value={staff_kindness}
+                                                    onStarClick={this.onStaffClick.bind(this)}
+                                                    />
+                                                </div>
+                                                </Col>
+                                                </Row>
+                                                <Row>
+                                                    <Col><Label for="Cleanliness">Cleanliness:</Label></Col>
+                                                <Col>
+                                                <div>   
+                                                    <StarRatingComponent 
+                                                    name="rate1" 
+                                                    starCount={5}
+                                                    value={cleanliness}
+                                                    onStarClick={this.onCleanlinessClick.bind(this)}
+                                                    />
+                                                </div>
+                                                </Col>
+                                                </Row>
+                                                <Row>
+                                                    <Col><Label for="Food Quality">Food Quality:</Label></Col>
+                                                <Col>
+                                                <div>   
+                                                    <StarRatingComponent 
+                                                    name="rate1" 
+                                                    starCount={5}
+                                                    value={food_quality}
+                                                    onStarClick={this.onFoodQualityClick.bind(this)}
+                                                    />
+                                                </div>
+                                                </Col>
+                                                </Row>
+                                                </Container>
                                                     <Button
                                                         color="dark"
                                                         style={{marginTop: '2rem'}}
