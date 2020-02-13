@@ -19,10 +19,14 @@ import { connect } from 'react-redux';
 import { getItems, deleteItem } from '../actions/itemActions';
 import PropTypes from 'prop-types';
 import ItemModal from './RestaurantModel';
+import ReactDOM from 'react-dom';
+import StarRatingComponent from 'react-star-rating-component';
+
 
 class Restaurant extends Component {
     state = {
-        modal: false
+        modal: false,
+        raiting: 2
     }
 
     static propTypes = {
@@ -45,9 +49,14 @@ class Restaurant extends Component {
         });
     }
 
+    onStarClick(nextValue, prevValue, name) {
+        this.setState({rating: nextValue});
+      }
+
     render() {
         
         const { items } = this.props.item;
+        const { rating } = this.state;
         return(
             <Container>
                     <ItemModal/>
@@ -76,7 +85,15 @@ class Restaurant extends Component {
                                             <Form onSubmit={this.onSubmit}>
                                                 <FormGroup>
                                                     <Label for="item">Review</Label>
-
+                                                <div>   
+                                                    {/* <h1 font="2">Rating from state: {rating}</h1> */}
+                                                    <StarRatingComponent 
+                                                    name="rate1" 
+                                                    starCount={5}
+                                                    value={rating}
+                                                    onStarClick={this.onStarClick.bind(this)}
+                                                    />
+                                                </div>
                                                     <Button
                                                         color="dark"
                                                         style={{marginTop: '2rem'}}
