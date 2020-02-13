@@ -37,6 +37,23 @@ router.get('/get_pic', (req, res) => {
         then(user => res.json({file: user.file}));
 })
 
+router.get('/update_user', (req, res) => {
+    console.log(`the req.query.current_username is ${req.query.current_username}`)
+    console.log(`the req.query.location is ${req.query.location}`)
+    // const filter = {name: req.query.current_username}
+    // const update = {location: req.query.location}
+    User.updateOne( {name: req.query.current_username},
+        {
+            name: req.query.username,
+            location: req.query.location
+        },
+        function(res) {
+            return ''
+        })
+    // .then(res => console.log(`the name is ${res.name}`));
+    
+})
+
 //@route    POST api/Users
 //@desc     Register new user     
 //@access   Public

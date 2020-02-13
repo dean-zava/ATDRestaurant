@@ -6,20 +6,39 @@ import { getItems, deleteItem } from '../actions/itemActions';
 import PropTypes from 'prop-types';
 import AppNavbar from './AppNavBar';
 import Restaurant from './Restaurant';
-import { get_pic } from '../actions/authActions';
+import { get_pic, update_user } from '../actions/authActions';
 // import ListGroup from 'react-bootstrap/ListGroup'
 
 class MyProfile extends Component {
     state = {
-        is_editable: false
+        is_editable: false,
+        username: null,
+        location: null
     }
 
     static propTypes = {
-        auth: PropTypes.object.isRequired
+        auth: PropTypes.object.isRequired,
+        update_user: PropTypes.object.isRequired
     }
 
     get_pic_path(username) {
         this.props.get_pic(username);
+    }
+
+    update_user = e => {
+        const {username, location} = this.state
+        const { user } = this.props.auth;
+        const { name } = user
+        const update_details = {username, location, current_username: name}
+        this.props.update_user(update_details);
+
+        this.setState({
+            is_editable: false
+        })
+    }
+
+    onChange = (e) => {
+        this.setState({ [e.target.name]: e.target.value });
     }
 
     edit_page = () => {
@@ -30,28 +49,30 @@ class MyProfile extends Component {
 
     render() {
         const { isAuthenticated, user, user_pic } = this.props.auth;
-        let dummy = user ? this.get_pic_path(user.name) : '';
+        let dummy = user && !user_pic ? this.get_pic_path(user.name) : '';
         const editable_page  = (
         <Form>
  <FormGroup>
         <Label for="Username">Username</Label>
         <Input
           type="text"
-          name="Username"
-          id="Username"
+          name="username"
+          id="username"
           placeholder="Enter Username"
+          onChange={this.onChange}
         />
       </FormGroup>
       <FormGroup>
-        <Label for="Location">Password</Label>
+        <Label for="Location">Location</Label>
         <Input
           type="text"
-          name="Location"
-          id="Location"
+          name="location"
+          id="location"
           placeholder="Enter Location"
+          onChange={this.onChange}
         />
       </FormGroup>
-                    <Button variant="primary" type="submit">
+                    <Button variant="primary" type="submit" onClick={this.update_user}>
                       Submit
                     </Button>
         </Form>)
@@ -84,6 +105,7 @@ class MyProfile extends Component {
 
 const mapStateToProps = state => ({
     auth: state.auth,
+    update_user: state.upadte_user
 });
 
-export default connect(mapStateToProps, { get_pic })(MyProfile);
+export default connect(mapStateToProps, { get_pic, update_user })(MyProfile);

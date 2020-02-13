@@ -146,3 +146,14 @@ export const tokenConfig = getState => {
 
     return config;
 };
+
+export const update_user = ({username, location, current_username}) => dispatch => {
+    console.log(`username issss ${username}`)
+    console.log(`location isss ${location}`)
+    axios.get('/api/users/update_user', {
+        params: {
+            username,
+            location,
+            current_username: current_username
+        }})
+}
