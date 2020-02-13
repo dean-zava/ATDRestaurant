@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, ListGroup, ListGroupItem, Button } from 'reactstrap'
+import { Container, ListGroup, ListGroupItem, Button,UncontrolledCollapse,Card,CardBody } from 'reactstrap'
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { connect } from 'react-redux';
 import { getItems, deleteItem } from '../actions/itemActions';
@@ -32,16 +32,20 @@ class Restaurant extends Component {
                             {items.map(({ _id, name }) => (
                                 <CSSTransition key={_id} timeout={500} classNames="fade">
                                     <ListGroupItem>
-                                    { this.props.isAuthenticated ? (
-                                    <Button
-                                        className="remove-btn"
-                                        color="danger"
-                                        size="sm"
-                                        onClick={this.onDeleteClick.bind(this, _id)}>
-
-                                        >&times;</Button>)
-                                        :
-                                        null}
+                                    <div>
+                                    <Button color="primary" id={`toggler${_id}`} style={{ marginBottom: '1rem' }}>
+                                    Toggle
+                                    </Button>
+                                    <UncontrolledCollapse toggler={`#toggler${_id}`}>
+                                    <Card>
+                                        <CardBody>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt magni, voluptas debitis
+                                        similique porro a molestias consequuntur earum odio officiis natus, amet hic, iste sed
+                                        dignissimos esse fuga! Minus, alias.
+                                        </CardBody>
+                                    </Card>
+                                    </UncontrolledCollapse>
+                                </div>
                                     {name}
                                     </ListGroupItem>
                                 </CSSTransition>

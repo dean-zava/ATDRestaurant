@@ -38,10 +38,6 @@ router.get('/get_pic', (req, res) => {
 })
 
 router.get('/update_user', (req, res) => {
-    console.log(`the req.query.current_username is ${req.query.current_username}`)
-    console.log(`the req.query.location is ${req.query.location}`)
-    // const filter = {name: req.query.current_username}
-    // const update = {location: req.query.location}
     User.updateOne( {name: req.query.current_username},
         {
             name: req.query.username,
