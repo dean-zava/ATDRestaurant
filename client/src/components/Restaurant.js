@@ -1,5 +1,19 @@
 import React, { Component } from 'react';
-import { Container, ListGroup, ListGroupItem, Button,UncontrolledCollapse,Card,CardBody } from 'reactstrap'
+import { Container,
+    ListGroup,
+    ListGroupItem,
+    Button,
+    UncontrolledCollapse,
+    Card,
+    CardBody,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    Form,
+    FormGroup,
+    Label,
+    Input
+} from 'reactstrap'
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { connect } from 'react-redux';
 import { getItems, deleteItem } from '../actions/itemActions';
@@ -7,6 +21,10 @@ import PropTypes from 'prop-types';
 import ItemModal from './RestaurantModel';
 
 class Restaurant extends Component {
+    state = {
+        modal: false
+    }
+
     static propTypes = {
         getItems: PropTypes.func.isRequired,
         item: PropTypes.object.isRequired,
@@ -17,8 +35,14 @@ class Restaurant extends Component {
         this.props.getItems();
     }
 
-    onDeleteClick = (id) => {
-        this.props.deleteItem(id);
+    onClick = () => {
+        // this.props.deleteItem(id);
+    }
+
+    toggle = () => {
+        this.setState({
+            modal: !this.state.modal
+        });
     }
 
     render() {
@@ -29,13 +53,40 @@ class Restaurant extends Component {
                     <ItemModal/>
                     <ListGroup>
                         <TransitionGroup className="Reviews">
-                            {items.map(({ _id, name }) => (
+                            {items.map(({ _id, name, location }) => (
                                 <CSSTransition key={_id} timeout={500} classNames="fade">
                                     <ListGroupItem>
-                                    <div>
-                                    <Button color="primary" id={`toggler${_id}`} style={{ marginBottom: '1rem' }}>
+                                <div>
+                                <Container style={{marginBottom: '1rem'}}> {name}</Container> 
+                                <Container style={{marginBottom: '1rem'}}> {location}</Container> 
+                                
+                                    <Button color="info" id={`toggler${_id}`} style={{ marginBottom: '1rem' }}>
                                     Toggle
                                     </Button>
+                                    <Button onClick={this.toggle} color="primary" style={{marginBottom: '1rem', marginLeft: '1rem'}}>
+                                        Add Review
+                                    </Button>
+
+                                    <Modal
+                                    isOpen={this.state.modal}
+                                    toggle={this.toggle}
+                                    >
+                                        <ModalHeader toggle={this.toggle}>Add To Review List</ModalHeader>
+                                        <ModalBody>
+                                            <Form onSubmit={this.onSubmit}>
+                                                <FormGroup>
+                                                    <Label for="item">Review</Label>
+
+                                                    <Button
+                                                        color="dark"
+                                                        style={{marginTop: '2rem'}}
+                                                        block
+                                                    >Add Review</Button>
+                                                </FormGroup>
+                                            </Form>
+                                        </ModalBody>
+                                    </Modal>
+
                                     <UncontrolledCollapse toggler={`#toggler${_id}`}>
                                     <Card>
                                         <CardBody>
@@ -46,7 +97,6 @@ class Restaurant extends Component {
                                     </Card>
                                     </UncontrolledCollapse>
                                 </div>
-                                    {name}
                                     </ListGroupItem>
                                 </CSSTransition>
                             ))}
