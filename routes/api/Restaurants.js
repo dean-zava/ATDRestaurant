@@ -11,7 +11,7 @@ const Restaurant = require('../../models/Restaurant');
 //@access   Public
 router.get('/', (req, res) => {
     Restaurant.find()
-    //.sort({date: -1})
+    .sort({_id: -1})
     .then(restaurant => res.json(restaurant))
 });
 
