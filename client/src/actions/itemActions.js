@@ -38,6 +38,10 @@ export const deleteItem = (id) => (dispatch, getState) => {
         );
 };
 
+export const add_review = (review) => (dispatch, getState) => {
+    axios.post('/api/Restaurants/add_review', review, tokenConfig(getState))
+}
+
 export const SetItemsLoading = () => {
     return {
         type: ITEMS_LOADING
