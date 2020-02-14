@@ -27,11 +27,11 @@ import StarRatingComponent from 'react-star-rating-component';
 
 class Restaurant extends Component {
     state = {
-        modal: false,
+        modal: {},
         bathroom_raiting: 3,
         staff_kindness: 3,
         cleanliness: 3,
-        food_quality: 3
+        food_quality: 3,
     }
 
     static propTypes = {
@@ -45,13 +45,11 @@ class Restaurant extends Component {
         this.props.getItems();
     }
 
-    onClick = () => {
-        // this.props.deleteItem(id);
-    }
-
-    toggle = () => {
+    toggle = (id) => {
+        let modal  = this.state.modal;
+        modal[id] = !modal[id]
         this.setState({
-            modal: !this.state.modal
+            modal: modal
         });
     }
 
@@ -71,28 +69,14 @@ class Restaurant extends Component {
         this.setState({food_quality: nextValue});
       }
 
-    // onSubmit = e => {
-    //     e.preventDefault();
-
-        // const newItem = {
-        //     name: this.state.name
-        // }
-
-        // this.props.addItem(newItem);
-        // this.toggle();
-    // }
-      onSubmit = (id) => {
-        console.log(`param is ${id}`)
-        // e.preventDefault();
-
-        // console.log(`e is ${e}`)
+      onSubmit = (restaurant_name) => {
+        console.log(`param is ${restaurant_name}`)
 
         const {name} = this.props.user;
 
         const new_review = {bathroom_raiting: this.state.bathroom_raiting, staff_kindness: this.state.staff_kindness,
             cleanliness: this.state.cleanliness, food_quality: this.state.food_quality, username: name,
-        // }
-            id: id}
+            restaurant_name}
 
         this.props.add_review(new_review);
     }
@@ -117,18 +101,17 @@ class Restaurant extends Component {
                                     Show Reviews
                                     </Button>
                                     { this.props.isAuthenticated ? 
-                                    <Button onClick={this.toggle} color="primary" style={{marginBottom: '1rem', marginLeft: '1rem'}}>
+                                    <Button onClick={this.toggle.bind(this, _id)} color="primary" style={{marginBottom: '1rem', marginLeft: '1rem'}}>
                                         Add Review
                                     </Button> :'' }
 
                                     <Modal
-                                    isOpen={this.state.modal}
-                                    toggle={this.toggle}
+                                    isOpen={this.state.modal[_id]}
+                                    toggle={this.toggle.bind(this, _id)}
                                     >
-                                        <ModalHeader toggle={this.toggle}>Add To Review List</ModalHeader>
+                                        <ModalHeader toggle={this.toggle.bind(this, _id)}>Add To Review List</ModalHeader>
                                         <ModalBody>
-                                            {/* <Form onSubmit={this.onSubmit}> */}
-                                            <Form onSubmit={this.onSubmit.bind(this, _id)}>
+                                            <Form onSubmit={this.onSubmit.bind(this, name)}>
                                                 <FormGroup>
                                                     
                                                 <Container>
