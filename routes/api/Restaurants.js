@@ -11,7 +11,7 @@ const Restaurant = require('../../models/Restaurant');
 //@access   Public
 router.get('/', (req, res) => {
     Restaurant.find()
-    //.sort({date: -1})
+    .sort({date: -1})
     .then(restaurant => res.json(restaurant))
 });
 
@@ -33,6 +33,24 @@ router.delete('/:id', auth, (req, res) => {
     Restaurant.findById(req.params.id)
     .then(restaurant => restaurant.remove().then(() => res.json({ success: true})))
     .catch(err => res.status(404).json({success: false})); 
+});
+
+router.post('/add_review', (req) => {
+    
+    const {bathroom_raiting, staff_kindness, cleanliness, food_quality, username, id} = req.body
+    const newReview = {
+        username,
+        bathroom_raiting,
+        staff_kindness,
+        cleanliness,
+        food_quality
+    }
+
+    Restaurant.updateOne( {_id: id}, {
+           $push: {reviews: newReview}
+        },
+        () => {console.log(`no Restaurant with id ${id}`)}  // updateOne must have function to handle case that nothing found to update with according id we're looking for.
+        )
 });
 
 module.exports = router;

@@ -66,11 +66,11 @@ class ItemModal extends Component {
                 isOpen={this.state.modal}
                 toggle={this.toggle}
                 >
-                    <ModalHeader toggle={this.toggle}>Add To Review List</ModalHeader>
+                    <ModalHeader toggle={this.toggle}>Add To Restaurants List</ModalHeader>
                     <ModalBody>
                         <Form onSubmit={this.onSubmit}>
                             <FormGroup>
-                                <Label for="item">Review</Label>
+                                <Label for="item">Restaurant</Label>
                                 <Input
                                     type="text"
                                     name="name"
@@ -90,7 +90,7 @@ class ItemModal extends Component {
                                     color="dark"
                                     style={{marginTop: '2rem'}}
                                     block
-                                >Add Review</Button>
+                                >Add Restaurant</Button>
                             </FormGroup>
                         </Form>
                     </ModalBody>

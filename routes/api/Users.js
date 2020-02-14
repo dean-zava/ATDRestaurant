@@ -37,17 +37,14 @@ router.get('/get_pic', (req, res) => {
         then(user => res.json({file: user.file}));
 })
 
-router.get('/update_user', (req, res) => {
+router.get('/update_user', (req) => {
     User.updateOne( {name: req.query.current_username},
         {
             name: req.query.username,
             location: req.query.location
         },
-        function(res) {
-            return ''
-        })
-    // .then(res => console.log(`the name is ${res.name}`));
-    
+        () => {console.log(`no user with name ${req.query.current_username} found`)}
+        ) 
 })
 
 //@route    POST api/Users

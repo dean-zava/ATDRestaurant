@@ -42,8 +42,7 @@ const RestaurantSchema = new Schema ({
         required: true
     },
     reviews: {
-        type: [Object],
-        default: 0
+        type: [Object]
     }
 });
 
