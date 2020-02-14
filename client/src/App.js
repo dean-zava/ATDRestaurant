@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
-import AppNavbar from './components/AppNavbar';
-import ShoppingList from './components/Restaurant';
+import AppNavbar from './components/AppNavBar';
+import Restaurant from './components/Restaurant';
 import ItemModal from './components/RestaurantModel';
 import { Container } from 'reactstrap';
-import FileUpload from './components/FileUpload';
-
+import {BrowserRouter as Router} from "react-router-dom"
+import { Route } from 'react-router';
 import { Provider } from 'react-redux';
 import store from './store';
 import { loadUser } from './actions/authActions';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import MyProfile from './components/MyProfile';
+import Main from './Main'
 
 class App extends Component {
   componentDidMount() {
@@ -21,15 +23,10 @@ class App extends Component {
     return (
       <Provider store={store}>
         <div className='App'>
-          <AppNavbar />
-          <Container>
-            <ItemModal />
-            <ShoppingList />
-            <FileUpload />
-          </Container>
+        <AppNavbar />
+        <Main />
         </div>
       </Provider>
-
     );
   }
 }

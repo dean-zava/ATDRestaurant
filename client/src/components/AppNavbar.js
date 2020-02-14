@@ -14,6 +14,7 @@ import PropTypes from 'prop-types';
 import RegisterModel from './auth/RegisterModel'
 import LoginModel from './auth/LoginModel'
 import Logout from './auth/Logout';
+import MyProfile from './MyProfile';
 
 class AppNavbar extends Component {
     state = {
@@ -42,6 +43,9 @@ class AppNavbar extends Component {
                 </NavItem>
                 <NavItem>
                     <Logout />
+                </NavItem>
+                < NavItem>
+                    <NavLink href="/MyProfile">My Profile</NavLink>
                 </NavItem>
             </Fragment>
         );

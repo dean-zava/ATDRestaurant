@@ -6,14 +6,16 @@ import {
     LOGIN_FAIL,
     LOGOUT_SUCCESS,
     REGISTER_SUCCESS,
-    REGISTER_FAIL
+    REGISTER_FAIL,
+    IMAGE_SUCCESS
   } from '../actions/types';
 
   const initialState = {
     token: localStorage.getItem('token'),
     isAuthenticated: null,
     isLoading: false,
-    user: null
+    user: null,
+    user_pic: null
   };
 
   export default function(state = initialState, action) {
@@ -22,6 +24,11 @@ import {
                 return {
                     ...state,
                     isLoading: true
+                };
+            case IMAGE_SUCCESS:
+                return {
+                    ...state,
+                    user_pic: action.payload
                 };
             case USER_LOADED:
                 return {
@@ -48,6 +55,7 @@ import {
                     ...state,
                     token: null,
                     user: null,
+                    user_pic: null,
                     isAuthenticated: false,
                     isLoading: false
                 }
