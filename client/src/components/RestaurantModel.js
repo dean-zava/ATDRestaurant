@@ -53,7 +53,7 @@ class ItemModal extends Component {
                 color="dark"
                 style={{marginBottom: '2rem'}}
                 onClick={this.toggle}
-                >Add Review</Button>
+                >Add Restaurant</Button>
                 :
                 <h4 className="mb-3 ml-4">Please log in to manage items</h4>
                 }
