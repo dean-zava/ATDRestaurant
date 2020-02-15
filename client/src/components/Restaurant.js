@@ -181,10 +181,17 @@ class Restaurant extends Component {
                                     <UncontrolledCollapse toggler={`#toggler${_id}`}>
                                     <Card>
                                         <CardBody>
-
-                                        <MDBDataTable striped bordered order data={
+                                        
+                                        <MDBDataTable striped bordered order data  ={
+                                                
                                             {
                                             columns: [
+                                                {
+                                                    label: 'Review Creator',
+                                                    field: 'username',
+                                                    sort: 'asc',
+                                                    width: 150
+                                                  },
                                                 {
                                                     label: 'Bathroom Raiting',
                                                     field: 'bathroom_raiting',
@@ -195,184 +202,33 @@ class Restaurant extends Component {
                                                     label: 'Staff Kindness',
                                                     field: 'staff_kindness',
                                                     sort: 'asc',
-                                                    width: 270
+                                                    width: 150
                                                   },
                                                   {
                                                     label: 'Cleanliness',
                                                     field: 'cleanliness',
                                                     sort: 'asc',
-                                                    width: 200
+                                                    width: 150
                                                   },
                                                   {
                                                     label: 'Food Quality',
                                                     field: 'food_quality',
                                                     sort: 'asc',
-                                                    width: 100
+                                                    width: 150
                                                   },
                                             ],
                                             
-                                            rows: reviews,
+                                            rows: reviews
                                         }
                                         } />
 
-                                        <MDBDataTable striped bordered order data={
-                                            {
-                                            columns: [
-                                                {
-                                                    label: 'Bathroom Raiting',
-                                                    field: 'bathroom_raiting',
-                                                    sort: 'asc',
-                                                    width: 150
-                                                  },
-                                                  {
-                                                    label: 'Staff Kindness',
-                                                    field: 'staff_kindness',
-                                                    sort: 'asc',
-                                                    width: 270
-                                                  },
-                                                  {
-                                                    label: 'Cleanliness',
-                                                    field: 'cleanliness',
-                                                    sort: 'asc',
-                                                    width: 200
-                                                  },
-                                                  {
-                                                    label: 'Food Quality',
-                                                    field: 'food_quality',
-                                                    sort: 'asc',
-                                                    width: 100
-                                                  },
-                                            ],
-                                            rows: reviews.map((review) => {
-                                                let {bathroom_raiting, staff_kindness, cleanliness, food_quality} = review;
-                                                return {
-                                                    bathroom_raiting:
-                                                        <StarRatingComponent 
-                                                        name="rate1" 
-                                                        starCount={5}
-                                                        value={bathroom_raiting}
-                                                        editing="false"
-                                                       />,
-                                                    staff_kindness:
-                                                        <StarRatingComponent 
-                                                        name="rate1" 
-                                                        starCount={5}
-                                                        value={staff_kindness}
-                                                        editing="false"
-                                                      />,
-                                                    cleanliness:
-                                                        <StarRatingComponent 
-                                                        name="rate1" 
-                                                        starCount={5}
-                                                        value={cleanliness}
-                                                        editing="false"
-                                                        />,
-                                                    food_quality:
-                                                        <StarRatingComponent 
-                                                        name="rate1" 
-                                                        starCount={5}
-                                                        value={food_quality}
-                                                        editing="false"
-                                                        />,
-                                                    }
-                                                })
-                                            }}/>
-
-                                        <Table id="dtOrderExample" striped bordered responsive class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
-                                            <thead>
-                                            <tr>
-                                                <th sm><Label for="Bathroom">Bathroom Quality:</Label></th>
-                                                <th sm><Label for="Staff Kindness">Staff Kindness:</Label></th>
-                                                <th sm><Label for="Cleanliness">Cleanliness:</Label></th>
-                                                <th sm><Label for="Food Quality">Food Quality:</Label></th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr> 
-                                            <th>
-                                            <div>   
-                                                <StarRatingComponent 
-                                                    name="rate1" 
-                                                    starCount={5}
-                                                    value={bathroom_raiting}
-                                                    editing="false"
-                                                />
-                                            </div>
-                                            </th>
-                                            </tr>
-                                            <tr>
-                                            <th>
-                                            <div>   
-                                                <StarRatingComponent 
-                                                    name="rate1" 
-                                                    starCount={5}
-                                                    value={staff_kindness}
-                                                    editing="false"
-                                                />
-                                            </div>
-                                            </th>
-                                            </tr>
-                                        </tbody>
-                                        </Table>
-
-                                        <Container>
-                                        <Row>
-                                            <Col><Label for="Bathroom">Bathroom Quality:</Label></Col>
-                                            <Col><Label for="Staff Kindness">Staff Kindness:</Label></Col>
-                                            <Col><Label for="Cleanliness">Cleanliness:</Label></Col>
-                                            <Col><Label for="Food Quality">Food Quality:</Label></Col>
-                                        </Row>
-                                        {reviews.map(({bathroom_raiting, staff_kindness, cleanliness, food_quality}) =>
-                                        <Row>
-                                        <Col>
-                                            <div>   
-                                                <StarRatingComponent 
-                                                    name="rate1" 
-                                                    starCount={5}
-                                                    value={bathroom_raiting}
-                                                    editing="false"
-                                                />
-                                            </div>
-                                        </Col>
-                                        <Col>
-                                            <div>   
-                                                <StarRatingComponent 
-                                                    name="rate1" 
-                                                    starCount={5}
-                                                    value={staff_kindness}
-                                                    editing="false"
-                                                />
-                                            </div>
-                                        </Col>
-                                        <Col>
-                                            <div>   
-                                                <StarRatingComponent 
-                                                    name="rate1" 
-                                                    starCount={5}
-                                                    value={cleanliness}
-                                                    editing="false"
-                                                />
-                                            </div>
-                                        </Col>
-                                        <Col>
-                                            <div>   
-                                                <StarRatingComponent 
-                                                    name="rate1" 
-                                                    starCount={5}
-                                                    value={food_quality}
-                                                    editing="false"
-                                                />
-                                            </div>
-                                        </Col>
-                                        </Row>
-                                            )}
-                                        </Container>
                                     </CardBody>
                                     </Card>
                                     </UncontrolledCollapse>
                                 </div>
                                     </ListGroupItem>
                                 </CSSTransition>
+                                
                             ))}
                         </TransitionGroup>
                     </ListGroup>

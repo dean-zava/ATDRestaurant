@@ -43,7 +43,7 @@ router.get('/update_user', (req) => {
             name: req.query.username,
             location: req.query.location
         },
-        () => {console.log(`no user with name ${req.query.current_username} found`)}
+        () => {}
         ) 
 })
 

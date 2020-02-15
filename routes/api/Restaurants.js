@@ -49,7 +49,7 @@ router.post('/add_review', (req) => {
     Restaurant.updateOne( {_id: id}, {
            $push: {reviews: newReview}
         },
-        () => {console.log(`no Restaurant with id ${id}`)}  // updateOne must have function to handle case that nothing found to update with according id we're looking for.
+        () => {}  
         )
 });
 
