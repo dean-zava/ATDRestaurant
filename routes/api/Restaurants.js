@@ -35,4 +35,22 @@ router.delete('/:id', auth, (req, res) => {
     .catch(err => res.status(404).json({success: false})); 
 });
 
+router.post('/add_review', (req) => {
+    
+    const {bathroom_raiting, staff_kindness, cleanliness, food_quality, username, id} = req.body
+    const newReview = {
+        username,
+        bathroom_raiting,
+        staff_kindness,
+        cleanliness,
+        food_quality
+    }
+
+    Restaurant.updateOne( {_id: id}, {
+           $push: {reviews: newReview}
+        },
+        () => {console.log(`no Restaurant with id ${id}`)}  // updateOne must have function to handle case that nothing found to update with according id we're looking for.
+        )
+});
+
 module.exports = router;
