@@ -69,14 +69,11 @@ class Restaurant extends Component {
         this.setState({food_quality: nextValue});
       }
 
-      onSubmit = (restaurant_name) => {
-        console.log(`param is ${restaurant_name}`)
-
+      onSubmit = (id) => {
         const {name} = this.props.user;
 
         const new_review = {bathroom_raiting: this.state.bathroom_raiting, staff_kindness: this.state.staff_kindness,
-            cleanliness: this.state.cleanliness, food_quality: this.state.food_quality, username: name,
-            restaurant_name}
+            cleanliness: this.state.cleanliness, food_quality: this.state.food_quality, username: name, id}
 
         this.props.add_review(new_review);
     }
@@ -111,7 +108,7 @@ class Restaurant extends Component {
                                     >
                                         <ModalHeader toggle={this.toggle.bind(this, _id)}>Add To Review List</ModalHeader>
                                         <ModalBody>
-                                            <Form onSubmit={this.onSubmit.bind(this, name)}>
+                                            <Form onSubmit={this.onSubmit.bind(this, _id)}>
                                                 <FormGroup>
                                                     
                                                 <Container>
