@@ -104,7 +104,7 @@ class Restaurant extends Component {
                     style={{ width: 300, marginBottom: '1rem' }}
                     onInputChange={this.onChangeSearch}
                     renderInput={params => (
-                        <TextField {...params} label="Combo box" variant="outlined" fullWidth />
+                        <TextField {...params} label="Search by Restaurant" variant="outlined" fullWidth />
                     )}
                     />
 
