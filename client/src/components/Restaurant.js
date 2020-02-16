@@ -19,7 +19,7 @@ import { Container,
 } from 'reactstrap'
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { connect } from 'react-redux';
-import { getItems, deleteItem, add_review } from '../actions/itemActions';
+import { getItems, deleteItem, add_review, get_users } from '../actions/itemActions';
 import PropTypes from 'prop-types';
 import ItemModal from './RestaurantModel';
 import ReactDOM from 'react-dom';
@@ -51,6 +51,7 @@ class Restaurant extends Component {
     }
     
     componentDidMount() {
+        this.props.get_users();
         this.props.getItems();
     }
 
@@ -97,10 +98,12 @@ class Restaurant extends Component {
 
     render() {
         
-        const { items } = this.props.item;
+        const { items, all_users } = this.props.item;
+        console.log(all_users)
         const { bathroom_raiting, staff_kindness, cleanliness, food_quality } = this.state;
+        const searched_user = qs.parse(this.props.location.search)['?search_user'];
 
-        return( qs.parse(this.props.location.search)['?search_user'] ? 
+        return( searched_user ? 
         
         <center>
         <Table id="dtOrderExample" style={{width: 1000, }} striped bordered responsive class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
@@ -111,33 +114,24 @@ class Restaurant extends Component {
         </tr>
         </thead>
         <tbody>
-            
-            
-        <tr> 
-        <th>
-        <div>   
-            <StarRatingComponent 
-                name="rate1" 
-                starCount={5}
-                value={bathroom_raiting}
-                editing="false"
-            />
-        </div>
-        </th>
-        </tr>
+            {all_users.filter(({name, location}) => name.includes(searched_user) || location.includes(searched_user))
+            .map(({name, location}) => (
+            <tr>
+                <th>
+                    <div>
+                        {name}
+                    </div>
+                </th>
+                <th>
+                    <div>
+                        {location}
+                    </div>
+                </th>
+            </tr>
+            )
 
-        <tr>
-        <th>
-        <div>   
-            <StarRatingComponent 
-                name="rate1" 
-                starCount={5}
-                value={staff_kindness}
-                editing="false"
-            />
-        </div>
-        </th>
-        </tr>
+        )}   
+            
     </tbody>
     </Table>
     </center>
@@ -360,5 +354,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { getItems, deleteItem, add_review }
+    { getItems, deleteItem, add_review, get_users }
     )(Restaurant);

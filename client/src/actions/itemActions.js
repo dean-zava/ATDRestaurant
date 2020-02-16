@@ -1,7 +1,17 @@
 import axios from 'axios';
-import { GET_ITEMS, ADD_ITEM, DELETE_ITEM, ITEMS_LOADING } from './types';
+import { GET_ITEMS, ADD_ITEM, DELETE_ITEM, ITEMS_LOADING, GET_ALL_USERS } from './types';
 import { tokenConfig } from './authActions';
 import { returnErrors } from './errorActions';
+
+export const get_users = () => dispatch => {
+    console.log('the action is happening')
+    axios.get('/api/users/get_users')
+    .then(res => 
+        dispatch ({
+            type: GET_ALL_USERS,
+            payload: res.data
+        }))
+}
 
 export const getItems = () => dispatch => {
     dispatch(SetItemsLoading());

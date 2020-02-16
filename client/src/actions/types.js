@@ -14,3 +14,4 @@ export const GET_ERRORS = 'GET_ERRORS';
 export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 export const QUERY_USER = 'QUERY_USER';
 export const IMAGE_SUCCESS = 'IMAGE_SUCCESS';
+export const GET_ALL_USERS = 'GET_ALL_USERS';

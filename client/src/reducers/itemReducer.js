@@ -1,8 +1,9 @@
-import { GET_ITEMS, ADD_ITEM, DELETE_ITEM, ITEMS_LOADING } from '../actions/types';
+import { GET_ITEMS, ADD_ITEM, DELETE_ITEM, ITEMS_LOADING, GET_ALL_USERS } from '../actions/types';
 
 const initialState = {
     items: [],
-    loading: false
+    loading: false,
+    all_users: []
 }
 
 export default function (state = initialState, action) {
@@ -27,6 +28,11 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 loading: true
+            }
+        case GET_ALL_USERS:
+            return {
+                ...state,
+                all_users: action.payload,
             }
         default:
             return state;

@@ -27,7 +27,6 @@ class AppNavbar extends Component {
     state = {
         isOpen: false,
         search_user: '',
-        submitted: false
     }
 
     static propTypes = {
@@ -42,13 +41,6 @@ class AppNavbar extends Component {
 
     search_change = (e) => {
         this.setState({ [e.target.name]: e.target.value });
-    }
-
-    onSubmit = e => {
-        e.preventDefault();
-
-        // this.props.search_user(this.state.search_user);
-        this.state.submitted = true;
     }
 
     render() {
@@ -81,14 +73,14 @@ class AppNavbar extends Component {
             </Fragment>
         );
         
-        return this.state.submitted ? <Redirect to="/MyProfile" /> : (
+        return (
         <div>
             <Navbar color="dark" dark className="mb-5">
                 <Container>
                     <NavbarBrand href="/">Restaurant Reviews</NavbarBrand>
                     <NavbarBrand style={{marginLeft: 500}}>
            
-                    <Form inline onSubmit={this.onSubmit}>
+                    <Form inline>
                         <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                             <Input type="text" name="search_user" id="search_user" placeholder="Search a User" 
                             onChange={this.search_change} />

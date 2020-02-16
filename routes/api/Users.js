@@ -32,6 +32,12 @@ router.post('/upload_pic',function(req, res) {
     })
 });
 
+router.get('/get_users', (req, res) => {
+    Users.find()
+    .sort({_id: -1})
+    .then(restaurant => res.json(restaurant))
+});
+
 router.get('/get_pic', (req, res) => {
     Users.findOne({name: req.query.user}).
         then(user => res.json({file: user.file}));
