@@ -32,6 +32,7 @@ class Restaurant extends Component {
     state = {
         modal: {},
         restaurant_filter: '',
+        location: '',
         bathroom_raiting: 3,
         staff_kindness: 3,
         cleanliness: 3,
@@ -109,10 +110,37 @@ class Restaurant extends Component {
                     />
 
                     </Col>
+
+                    <Col>
+                        <Button color="secondary" id={`advance_search_toggler`} style={{ marginBottom: '1rem' }}>
+                                Advance Search
+                        </Button>
+                    </Col>
+                </Row>
+                <Row style={{marginBottom: '1rem', marginTop: '1rem'}}>
+                    <UncontrolledCollapse toggler={`advance_search_toggler`}>
+                        <Col>
+                        <FormGroup>
+                            <Input
+                            type="search"
+                            size="sm"
+                            style={{width: 200, heigth: 200}}
+                            bsSize="sm"
+                            name="location"
+                            id="exampleSearch"
+                            placeholder="search placeholder"
+                            onChange={(e) => this.setState({ location: e.target.value })}
+                            />
+                        </FormGroup>
+                        </Col>
+                        <Col>
+                        </Col>
+                    </UncontrolledCollapse>
                 </Row>
                     <ListGroup>
                         <TransitionGroup className="Reviews">
                             {items.filter(({name}) => name.includes(this.state.restaurant_filter))
+                            .filter(({location}) => location.includes(this.state.location))
                             .map(({ _id, name, location, reviews }) => (
                                 <CSSTransition key={_id} timeout={500} classNames="fade">
                                     <ListGroupItem>
