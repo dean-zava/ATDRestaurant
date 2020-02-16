@@ -15,7 +15,8 @@ import { Container,
     Input,
     Col,
     Row,
-    Table
+    Table,
+    NavLink
 } from 'reactstrap'
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { connect } from 'react-redux';
@@ -119,7 +120,7 @@ class Restaurant extends Component {
             <tr>
                 <th>
                     <div>
-                        {name}
+                    <NavLink href={`/MyProfile/?name=${name}&location=${location}`}>{name}</NavLink>
                     </div>
                 </th>
                 <th>

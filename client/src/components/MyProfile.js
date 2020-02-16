@@ -7,7 +7,8 @@ import PropTypes from 'prop-types';
 import AppNavbar from './AppNavBar';
 import Restaurant from './Restaurant';
 import { get_pic, update_user } from '../actions/authActions';
-// import ListGroup from 'react-bootstrap/ListGroup'
+
+var qs = require('qs');
 
 class MyProfile extends Component {
     state = {
@@ -48,8 +49,23 @@ class MyProfile extends Component {
     }
 
     render() {
-        const { isAuthenticated, user, user_pic } = this.props.auth;
+        const { isAuthenticated, user_pic } = this.props.auth;
+        let auth_user = this.props.auth.user;
+        let qs_user = qs.parse(this.props.location.search);
+        let user = qs_user.location ? 
+            {
+                name: qs_user['?name'],
+                location: qs_user.location
+            }
+            : auth_user;
+        console.log('start here')
+        console.log(this.props.auth)
+        console.log(user)
+        console.log(auth_user)
+        console.log(qs_user)
+        console.log('end here')
         let dummy = user && !user_pic ? this.get_pic_path(user.name) : '';
+        
         const editable_page  = (
         <Form>
  <FormGroup>
