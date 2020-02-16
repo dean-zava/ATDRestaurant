@@ -14,7 +14,8 @@ import { Container,
     Label,
     Input,
     Col,
-    Row
+    Row,
+    Table
 } from 'reactstrap'
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { connect } from 'react-redux';
@@ -99,7 +100,49 @@ class Restaurant extends Component {
         const { items } = this.props.item;
         const { bathroom_raiting, staff_kindness, cleanliness, food_quality } = this.state;
 
-        return( qs.parse(this.props.location.search)['?search_user'] ? 'Kaki' :
+        return( qs.parse(this.props.location.search)['?search_user'] ? 
+        
+        <center>
+        <Table id="dtOrderExample" style={{width: 1000, }} striped bordered responsive class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+        <thead>
+        <tr>
+            <th sm><Label for="Username">Username</Label></th>
+            <th sm><Label for="Location">Location</Label></th>
+        </tr>
+        </thead>
+        <tbody>
+            
+            
+        <tr> 
+        <th>
+        <div>   
+            <StarRatingComponent 
+                name="rate1" 
+                starCount={5}
+                value={bathroom_raiting}
+                editing="false"
+            />
+        </div>
+        </th>
+        </tr>
+
+        <tr>
+        <th>
+        <div>   
+            <StarRatingComponent 
+                name="rate1" 
+                starCount={5}
+                value={staff_kindness}
+                editing="false"
+            />
+        </div>
+        </th>
+        </tr>
+    </tbody>
+    </Table>
+    </center>
+        
+        :
             <Container>
                 <Row>
                     <Col>
