@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Container,
     ListGroup,
     ListGroupItem,
@@ -24,7 +24,9 @@ import ItemModal from './RestaurantModel';
 import ReactDOM from 'react-dom';
 import StarRatingComponent from 'react-star-rating-component';
 import { MDBDataTable } from 'mdbreact';
-
+import {Typeahead} from 'react-bootstrap-typeahead';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import TextField from '@material-ui/core/TextField';
 
 class Restaurant extends Component {
     state = {
@@ -95,18 +97,17 @@ class Restaurant extends Component {
                         <ItemModal/>
                     </Col>
                     <Col>
-                    <FormGroup>
-                            <Input
-                            type="search"
-                            size="sm"
-                            style={{width: 200}}
-                            bsSize="sm"
-                            name="restaurant_filter"
-                            id="exampleSearch"
-                            placeholder="search placeholder"
-                            onChange={this.onChangeSearch}
-                            />
-                    </FormGroup>
+                    <Autocomplete
+                    id="combo-box-demo"
+                    options={items}
+                    getOptionLabel={option => option.name}
+                    style={{ width: 300, marginBottom: '1rem' }}
+                    onInputChange={this.onChangeSearch}
+                    renderInput={params => (
+                        <TextField {...params} label="Combo box" variant="outlined" fullWidth />
+                    )}
+                    />
+
                     </Col>
                 </Row>
                     <ListGroup>

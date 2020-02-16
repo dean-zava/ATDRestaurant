@@ -12,6 +12,7 @@
     "bootstrap": "^4.4.1",
     "mdbreact": "^4.25.1",
     "react": "^16.12.0",
+    "react-bootstrap-typeahead": "^3.4.7",
     "react-dom": "^16.12.0",
     "react-dropzone": "^10.2.1",
     "react-rating": "^2.0.4",
