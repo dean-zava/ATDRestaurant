@@ -28,6 +28,8 @@ import {Typeahead} from 'react-bootstrap-typeahead';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 
+var qs = require('qs');
+
 class Restaurant extends Component {
     state = {
         modal: {},
@@ -96,7 +98,8 @@ class Restaurant extends Component {
         
         const { items } = this.props.item;
         const { bathroom_raiting, staff_kindness, cleanliness, food_quality } = this.state;
-        return(
+
+        return( qs.parse(this.props.location.search)['?search_user'] ? 'Kaki' :
             <Container>
                 <Row>
                     <Col>
