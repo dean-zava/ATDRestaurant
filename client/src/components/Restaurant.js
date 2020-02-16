@@ -12,7 +12,7 @@ import { Container,
     Form,
     FormGroup,
     Label,
-    Table,
+    Input,
     Col,
     Row
 } from 'reactstrap'
@@ -29,6 +29,7 @@ import { MDBDataTable } from 'mdbreact';
 class Restaurant extends Component {
     state = {
         modal: {},
+        restaurant_filter: '',
         bathroom_raiting: 3,
         staff_kindness: 3,
         cleanliness: 3,
@@ -79,17 +80,39 @@ class Restaurant extends Component {
         this.props.add_review(new_review);
     }
 
+    onChangeSearch = (e) => {
+        this.setState({ restaurant_filter: e.target.value });
+    }
+
     render() {
         
         const { items } = this.props.item;
-        console.log(items.filter(({restaurant_name}) => restaurant_name === "Some"))
         const { bathroom_raiting, staff_kindness, cleanliness, food_quality } = this.state;
         return(
             <Container>
-                    <ItemModal/>
+                <Row>
+                    <Col>
+                        <ItemModal/>
+                    </Col>
+                    <Col>
+                    <FormGroup>
+                            <Input
+                            type="search"
+                            size="sm"
+                            style={{width: 200}}
+                            bsSize="sm"
+                            name="restaurant_filter"
+                            id="exampleSearch"
+                            placeholder="search placeholder"
+                            onChange={this.onChangeSearch}
+                            />
+                    </FormGroup>
+                    </Col>
+                </Row>
                     <ListGroup>
                         <TransitionGroup className="Reviews">
-                            {items.map(({ _id, name, location, reviews }) => (
+                            {items.filter(({name}) => name.includes(this.state.restaurant_filter))
+                            .map(({ _id, name, location, reviews }) => (
                                 <CSSTransition key={_id} timeout={500} classNames="fade">
                                     <ListGroupItem>
                                 <div>
@@ -228,7 +251,6 @@ class Restaurant extends Component {
                                 </div>
                                     </ListGroupItem>
                                 </CSSTransition>
-                                
                             ))}
                         </TransitionGroup>
                     </ListGroup>
