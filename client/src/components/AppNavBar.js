@@ -7,7 +7,13 @@ import {
     Nav,
     NavItem,
     NavLink,
-    Container
+    Container,
+    Form,
+    FormGroup,
+    Label,
+    Input,
+    Button
+
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -66,6 +72,15 @@ class AppNavbar extends Component {
             <Navbar color="dark" dark className="mb-5">
                 <Container>
                     <NavbarBrand href="/">Restaurant Reviews</NavbarBrand>
+                    <NavbarBrand style={{marginLeft: 500}}>
+           
+                    <Form inline>
+                        <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                            <Input type="text" name="search_user" id="search_user" placeholder="Search a User" />
+                        </FormGroup>
+                        </Form>
+
+                    </NavbarBrand>
                     <NavbarToggler onClick={this.toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
