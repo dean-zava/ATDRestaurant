@@ -58,12 +58,6 @@ class MyProfile extends Component {
                 location: qs_user.location
             }
             : auth_user;
-        console.log('start here')
-        console.log(this.props.auth)
-        console.log(user)
-        console.log(auth_user)
-        console.log(qs_user)
-        console.log('end here')
         let dummy = user && !user_pic ? this.get_pic_path(user.name) : '';
         
         const editable_page  = (
@@ -102,17 +96,20 @@ class MyProfile extends Component {
                 <ListGroupItem>{user ? `location: ${user.location}` : '' }</ListGroupItem>
               </ListGroup>
               
+              {!qs_user.location ? 
               <Button
               color="dark"
               style={{margin: '1rem'}}
               onClick={this.edit_page}
               >Edit
               </Button>
+              : ''
+            }
               </div>
         )
 
         return(
-            this.state.is_editable ? 
+            this.state.is_editable ?
             editable_page :
             view_page
             );
