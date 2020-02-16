@@ -37,6 +37,7 @@ class Restaurant extends Component {
         staff_kindness: 3,
         cleanliness: 3,
         food_quality: 3,
+        avgRate: 0
     }
 
     static propTypes = {
@@ -87,6 +88,10 @@ class Restaurant extends Component {
         this.setState({ restaurant_filter: e.target.value });
     }
 
+    onChangeAvgStar(nextValue, prevValue, name) {
+        this.setState({ avgRate: nextValue });
+    }
+
     render() {
         
         const { items } = this.props.item;
@@ -108,9 +113,7 @@ class Restaurant extends Component {
                         <TextField {...params} label="Search by Restaurant" variant="outlined" fullWidth />
                     )}
                     />
-
                     </Col>
-
                     <Col>
                         <Button color="secondary" id={`advance_search_toggler`} style={{ marginBottom: '1rem' }}>
                                 Advance Search
@@ -124,23 +127,38 @@ class Restaurant extends Component {
                             <Input
                             type="search"
                             size="sm"
-                            style={{width: 200, heigth: 200}}
+                            style={{width: 150, heigth: 200}}
                             bsSize="sm"
                             name="location"
                             id="exampleSearch"
-                            placeholder="search placeholder"
+                            placeholder="Search by Location"
                             onChange={(e) => this.setState({ location: e.target.value })}
                             />
-                        </FormGroup>
-                        </Col>
-                        <Col>
-                        </Col>
+                            </FormGroup>
+                            </Col>
+                            <Col>
+                            <StarRatingComponent 
+                                name="AvgRate" 
+                                starCount={5}
+                                value={this.state.avgRate}
+                                onStarClick={this.onChangeAvgStar.bind(this)}
+                                edit="true"
+                            />
+                            </Col>
                     </UncontrolledCollapse>
                 </Row>
                     <ListGroup>
                         <TransitionGroup className="Reviews">
                             {items.filter(({name}) => name.includes(this.state.restaurant_filter))
                             .filter(({location}) => location.includes(this.state.location))
+                            .filter(({reviews}) => 
+                                (reviews.map(({bathroom_raiting, staff_kindness, cleanliness, food_quality}) =>
+                                    [bathroom_raiting, staff_kindness, cleanliness, food_quality].reduce(
+                                        (sum, value) => sum + (value/4), 0))
+                                    .reduce(
+                                        (sum, value) => sum + (value/reviews.length),
+                                        0))
+                                        >= this.state.avgRate )
                             .map(({ _id, name, location, reviews }) => (
                                 <CSSTransition key={_id} timeout={500} classNames="fade">
                                     <ListGroupItem>
