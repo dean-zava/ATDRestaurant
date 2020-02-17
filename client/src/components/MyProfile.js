@@ -91,10 +91,17 @@ class MyProfile extends Component {
                       Submit
                     </Button>
         </Form>)
-        const reviews = user && items.length ? items.map( ({reviews}) => reviews.filter( ({username}) => username === user.name )).flat() :''; 
-        // console.log(reviews) 
-        // console.log(Array.isArray(reviews))
-        let zbib = Array.isArray(reviews) ? console.log(reviews.map((review) => review)): '';
+
+
+        const reviews_by_username =user && items.length ? items.map( ({reviews}) => reviews.filter( ({username}) => username === user.name )) :'';
+        
+        const restaurant_names = user && items.length? items.map( ({name}) => name )  :'';
+        var zipped_restaurant_arr = Array.isArray(reviews_by_username) ? reviews_by_username.map(function(e, i) {
+            return [e, restaurant_names[i]]
+        }) :'';
+        
+        let reviews = Array.isArray(zipped_restaurant_arr) ? zipped_restaurant_arr.map(x => x[0].map( y=> {return {...y, username: x[1]}})).flat() : '';
+
         const view_page = (
                 <div>
                 <ListGroup>
@@ -121,7 +128,7 @@ class MyProfile extends Component {
                         {
                         columns: [
                             {
-                                label: 'Review Creator',
+                                label: 'Restaurant Name',
                                 field: 'username',
                                 sort: 'asc',
                                 width: 150
