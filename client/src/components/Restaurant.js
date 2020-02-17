@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { Container,
     ListGroup,
     ListGroupItem,
@@ -23,10 +23,8 @@ import { connect } from 'react-redux';
 import { getItems, deleteItem, add_review, get_users } from '../actions/itemActions';
 import PropTypes from 'prop-types';
 import ItemModal from './RestaurantModel';
-import ReactDOM from 'react-dom';
 import StarRatingComponent from 'react-star-rating-component';
 import { MDBDataTable } from 'mdbreact';
-import {Typeahead} from 'react-bootstrap-typeahead';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 
@@ -100,7 +98,6 @@ class Restaurant extends Component {
     render() {
         
         const { items, all_users } = this.props.item;
-        console.log(all_users)
         const { bathroom_raiting, staff_kindness, cleanliness, food_quality } = this.state;
         const searched_user = qs.parse(this.props.location.search)['?search_user'];
 

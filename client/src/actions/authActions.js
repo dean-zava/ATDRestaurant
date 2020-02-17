@@ -76,8 +76,7 @@ export const register = ({ name, password, location}, file) => dispatch => {
 
     const data = new FormData() 
     data.append('file', file)
-    axios.post('/api/users/upload_pic', data).
-        then(res => {
+    axios.post('/api/users/upload_pic', data).then(res => {
     
         console.log(`res is ${res.data.path}`);
 

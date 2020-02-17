@@ -10,9 +10,7 @@ import {
     Container,
     Form,
     FormGroup,
-    Label,
-    Input,
-    Button
+    Input
 
 } from 'reactstrap';
 import { connect } from 'react-redux';
@@ -20,8 +18,6 @@ import PropTypes from 'prop-types';
 import RegisterModel from './auth/RegisterModel'
 import LoginModel from './auth/LoginModel'
 import Logout from './auth/Logout';
-import MyProfile from './MyProfile';
-import {Redirect} from "react-router";
 
 class AppNavbar extends Component {
     state = {

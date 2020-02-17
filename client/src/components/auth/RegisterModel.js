@@ -16,7 +16,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { register, get_username } from '../../actions/authActions'
 import { clearErrors } from '../../actions/errorActions';
-var fs = require('fs');
+
 
 class RegisterModel extends Component {
     state = {

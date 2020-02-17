@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { Container, Button, ListGroup, ListGroupItem, Form, FormGroup, Input, Label } from 'reactstrap'
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { Button, ListGroup, ListGroupItem, Form, FormGroup, Input, Label } from 'reactstrap'
 import { connect } from 'react-redux';
 import { getItems, deleteItem } from '../actions/itemActions';
 import PropTypes from 'prop-types';
-import AppNavbar from './AppNavBar';
-import Restaurant from './Restaurant';
 import { get_pic, update_user } from '../actions/authActions';
+import { MDBDataTable } from 'mdbreact';
 
 var qs = require('qs');
 
@@ -14,12 +12,18 @@ class MyProfile extends Component {
     state = {
         is_editable: false,
         username: null,
-        location: null
+        location: null,
+        getItems: PropTypes.func.isRequired,
+        item: PropTypes.object.isRequired,
     }
 
     static propTypes = {
         auth: PropTypes.object.isRequired,
         update_user: PropTypes.object.isRequired
+    }
+
+    componentDidMount() {
+        this.props.getItems();
     }
 
     get_pic_path(username) {
@@ -49,7 +53,8 @@ class MyProfile extends Component {
     }
 
     render() {
-        const { isAuthenticated, user_pic } = this.props.auth;
+        const { items } = this.props.item;
+        const { user_pic } = this.props.auth;
         let auth_user = this.props.auth.user;
         let qs_user = qs.parse(this.props.location.search);
         let user = qs_user.location ? 
@@ -86,7 +91,10 @@ class MyProfile extends Component {
                       Submit
                     </Button>
         </Form>)
-
+        const reviews = user && items.length ? items.map( ({reviews}) => reviews.filter( ({username}) => username === user.name )).flat() :''; 
+        // console.log(reviews) 
+        // console.log(Array.isArray(reviews))
+        let zbib = Array.isArray(reviews) ? console.log(reviews.map((review) => review)): '';
         const view_page = (
                 <div>
                 <ListGroup>
@@ -105,6 +113,50 @@ class MyProfile extends Component {
               </Button>
               : ''
             }
+            <h4>Reviews List:</h4>
+                {Array.isArray(reviews)?  
+                    
+                    <MDBDataTable striped bordered order data  ={
+                        
+                        {
+                        columns: [
+                            {
+                                label: 'Review Creator',
+                                field: 'username',
+                                sort: 'asc',
+                                width: 150
+                                },
+                            {
+                                label: 'Bathroom Raiting',
+                                field: 'bathroom_raiting',
+                                sort: 'asc',
+                                width: 150
+                                },
+                                {
+                                label: 'Staff Kindness',
+                                field: 'staff_kindness',
+                                sort: 'asc',
+                                width: 150
+                                },
+                                {
+                                label: 'Cleanliness',
+                                field: 'cleanliness',
+                                sort: 'asc',
+                                width: 150
+                                },
+                                {
+                                label: 'Food Quality',
+                                field: 'food_quality',
+                                sort: 'asc',
+                                width: 150
+                                },
+                        ],
+                        
+                        rows: reviews
+                    }
+                } /> 
+                 :''}
+
               </div>
         )
 
@@ -118,7 +170,8 @@ class MyProfile extends Component {
 
 const mapStateToProps = state => ({
     auth: state.auth,
-    update_user: state.upadte_user
+    update_user: state.upadte_user,
+    item: state.item
 });
 
-export default connect(mapStateToProps, { get_pic, update_user })(MyProfile);
+export default connect(mapStateToProps, { get_pic, update_user, getItems })(MyProfile);
