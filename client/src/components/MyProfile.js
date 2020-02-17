@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Button, ListGroup, ListGroupItem, Form, FormGroup, Input, Label } from 'reactstrap'
+import { Button, ListGroup, ListGroupItem, Form, FormGroup, Input, Label, ButtonGroup } from 'reactstrap'
 import { connect } from 'react-redux';
-import { getItems, deleteItem } from '../actions/itemActions';
+import { getItems, delete_review } from '../actions/itemActions';
 import PropTypes from 'prop-types';
 import { get_pic, update_user } from '../actions/authActions';
 import { MDBDataTable } from 'mdbreact';
@@ -15,6 +15,7 @@ class MyProfile extends Component {
         location: null,
         getItems: PropTypes.func.isRequired,
         item: PropTypes.object.isRequired,
+        
     }
 
     static propTypes = {
@@ -50,6 +51,20 @@ class MyProfile extends Component {
         this.setState({
             is_editable: true
         });
+    }
+
+    deleteReview = (review, rest_name) => {
+        const review_to_delete = {
+            review,
+            rest_name
+        }
+        this.props.delete_review(review_to_delete)
+        window.location.reload()
+    }
+
+    editReview = (review, rest_name) => {
+        console.log(review)
+        console.log(`rest_name is : ${rest_name}`)
     }
 
     render() {
@@ -99,8 +114,13 @@ class MyProfile extends Component {
         var zipped_restaurant_arr = Array.isArray(reviews_by_username) ? reviews_by_username.map(function(e, i) {
             return [e, restaurant_names[i]]
         }) :'';
-        
-        let reviews = Array.isArray(zipped_restaurant_arr) ? zipped_restaurant_arr.map(x => x[0].map( y=> {return {...y, username: x[1]}})).flat() : '';
+
+
+        const reviews = Array.isArray(zipped_restaurant_arr) ? zipped_restaurant_arr.map(rev_list => rev_list[0].map( rev=> {return {...rev, username: rev_list[1],
+                        delete: <Button onClick={() => this.deleteReview(rev, rev_list[1])}>Delete</Button>,
+                        edit:  <Button onClick={() => this.editReview(rev, rev_list[1])}>Edit</Button>} })).flat() : '';
+ 
+
 
         const view_page = (
                 <div>
@@ -122,7 +142,7 @@ class MyProfile extends Component {
             }
             <h4>Reviews List:</h4>
                 {Array.isArray(reviews)?  
-                    
+                        
                     <MDBDataTable striped bordered order data  ={
                         
                         {
@@ -157,6 +177,19 @@ class MyProfile extends Component {
                                 sort: 'asc',
                                 width: 150
                                 },
+                                {
+                                label: 'delete',
+                                field: 'delete',
+                                sort: 'asc',
+                                width: 150
+                                },
+                                {
+                                label: 'edit',
+                                field: 'edit',
+                                sort: 'asc',
+                                width: 150
+                                },
+
                         ],
                         
                         rows: reviews
@@ -178,7 +211,8 @@ class MyProfile extends Component {
 const mapStateToProps = state => ({
     auth: state.auth,
     update_user: state.upadte_user,
-    item: state.item
+    item: state.item,
+    delete_review: state.delete_review
 });
 
-export default connect(mapStateToProps, { get_pic, update_user, getItems })(MyProfile);
+export default connect(mapStateToProps, { get_pic, update_user, getItems, delete_review })(MyProfile);
