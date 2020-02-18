@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Button, ListGroup, ListGroupItem, Form, FormGroup, Input, Label, ButtonGroup } from 'reactstrap'
+import { Button, ListGroup, ListGroupItem, Form, FormGroup, Input, Label, Modal, ModalHeader, ModalBody, Row, Col, Container } from 'reactstrap'
 import { connect } from 'react-redux';
-import { getItems, delete_review } from '../actions/itemActions';
+import { getItems, delete_review, edit_review } from '../actions/itemActions';
 import PropTypes from 'prop-types';
 import { get_pic, update_user } from '../actions/authActions';
 import { MDBDataTable } from 'mdbreact';
+import StarRatingComponent from 'react-star-rating-component';
 
 var qs = require('qs');
 
@@ -15,6 +16,13 @@ class MyProfile extends Component {
         location: null,
         getItems: PropTypes.func.isRequired,
         item: PropTypes.object.isRequired,
+        modal: false,
+        oldRev: null,
+        restaurant_name: '',
+        new_bathroom_raiting: 3,
+        new_staff_kindness: 3,
+        new_cleanliness: 3,
+        new_food_quality: 3
         
     }
 
@@ -62,14 +70,49 @@ class MyProfile extends Component {
         window.location.reload()
     }
 
-    editReview = (review, rest_name) => {
-        console.log(review)
-        console.log(`rest_name is : ${rest_name}`)
+    editToggle = (review, rest_name) => {
+        //this.props.clearErrors();
+        this.setState({
+            modal: !this.state.modal,
+            restaurant_name: rest_name,
+            oldRev: review })
+        
     }
+
+    editReview = () => {
+        const { new_bathroom_raiting, new_staff_kindness, new_cleanliness, new_food_quality, oldRev, restaurant_name} = this.state;
+        const review_to_edit = {
+            oldRev,
+            restaurant_name,
+            new_bathroom_raiting,
+            new_staff_kindness,
+            new_cleanliness,
+            new_food_quality
+        } 
+        this.props.edit_review(review_to_edit)
+        window.location.reload()
+    }
+
+    onBathroomClick(nextValue) {
+        this.setState({new_bathroom_raiting: nextValue});
+      }
+
+    onStaffClick(nextValue) {
+        this.setState({new_staff_kindness: nextValue});
+      }
+
+    onCleanlinessClick(nextValue) {
+        this.setState({new_cleanliness: nextValue});
+      }
+
+    onFoodQualityClick(nextValue) {
+        this.setState({new_food_quality: nextValue});
+      }
 
     render() {
         const { items } = this.props.item;
         const { user_pic } = this.props.auth;
+        const { new_bathroom_raiting, new_staff_kindness, new_cleanliness, new_food_quality } = this.state;
         let auth_user = this.props.auth.user;
         let qs_user = qs.parse(this.props.location.search);
         let user = qs_user.location ? 
@@ -78,11 +121,11 @@ class MyProfile extends Component {
                 location: qs_user.location
             }
             : auth_user;
-        let dummy = user && !user_pic ? this.get_pic_path(user.name) : '';
-        
+        if(user && !user_pic) { this.get_pic_path(user.name) }
+
         const editable_page  = (
         <Form>
- <FormGroup>
+      <FormGroup>
         <Label for="Username">Username</Label>
         <Input
           type="text"
@@ -102,11 +145,11 @@ class MyProfile extends Component {
           onChange={this.onChange}
         />
       </FormGroup>
-                    <Button variant="primary" type="submit" onClick={this.update_user}>
-                      Submit
-                    </Button>
-        </Form>)
-
+        <Button variant="primary" type="submit" onClick={this.update_user}>
+            Submit
+        </Button>
+    </Form>)
+   
 
         const reviews_by_username =user && items.length ? items.map( ({reviews}) => reviews.filter( ({username}) => username === user.name )) :'';
         
@@ -118,9 +161,8 @@ class MyProfile extends Component {
 
         const reviews = Array.isArray(zipped_restaurant_arr) ? zipped_restaurant_arr.map(rev_list => rev_list[0].map( rev=> {return {...rev, username: rev_list[1],
                         delete: <Button onClick={() => this.deleteReview(rev, rev_list[1])}>Delete</Button>,
-                        edit:  <Button onClick={() => this.editReview(rev, rev_list[1])}>Edit</Button>} })).flat() : '';
+                        edit:  <Button onClick={() => this.editToggle(rev, rev_list[1])}>Edit</Button>} })).flat() : '';
  
-
 
         const view_page = (
                 <div>
@@ -201,10 +243,85 @@ class MyProfile extends Component {
         )
 
         return(
-            this.state.is_editable ?
-            editable_page :
+            <div>
+            <Modal
+            isOpen={this.state.modal}
+            toggle={this.editToggle}
+            >
+                <ModalHeader toggle={this.toggle}>Edit</ModalHeader>
+                <ModalBody>
+                    <Form onSubmit={this.editReview}>
+                        <FormGroup>
+                        <Container>
+                            <Row><Col> <Label for="item">Review</Label> </Col></Row>
+                            <Row>
+                            <Col><Label for="Bathroom">Bathroom Quality:</Label></Col>
+                        <Col>
+                        <div>   
+                            <StarRatingComponent 
+                            name="rate1" 
+                            starCount={5}
+                            value={new_bathroom_raiting}
+                            onStarClick={this.onBathroomClick.bind(this)}
+                            />
+                        </div>
+                        </Col>
+                        </Row>
+                        <Row>
+                            <Col><Label for="Staff Kindness">Staff Kindness:</Label></Col>
+                        <Col>
+                        <div>   
+                            <StarRatingComponent 
+                            name="rate2" 
+                            starCount={5}
+                            value={new_staff_kindness}
+                            onStarClick={this.onStaffClick.bind(this)}
+                            />
+                        </div>
+                        </Col>
+                        </Row>
+                        <Row>
+                            <Col><Label for="Cleanliness">Cleanliness:</Label></Col>
+                        <Col>
+                        <div>   
+                            <StarRatingComponent 
+                            name="rate3" 
+                            starCount={5}
+                            value={new_cleanliness}
+                            onStarClick={this.onCleanlinessClick.bind(this)}
+                            />
+                        </div>
+                        </Col>
+                        </Row>
+                        <Row>
+                            <Col><Label for="Food Quality">Food Quality:</Label></Col>
+                        <Col>
+                        <div>   
+                            <StarRatingComponent 
+                            name="rate4" 
+                            starCount={5}
+                            value={new_food_quality}
+                            onStarClick={this.onFoodQualityClick.bind(this)}
+                            />
+                        </div>
+                        </Col>
+                        </Row>
+                        </Container>
+                            <Button
+                                color="dark"
+                                style={{marginTop: '2rem'}}
+                                block
+                            >Edit Review</Button>
+                        </FormGroup>
+                    </Form>
+                </ModalBody>
+        </Modal>
+           { this.state.is_editable ?
+            editable_page  :
             view_page
-            );
+           }
+           </div>
+           );
     }
 }
 
@@ -212,7 +329,8 @@ const mapStateToProps = state => ({
     auth: state.auth,
     update_user: state.upadte_user,
     item: state.item,
-    delete_review: state.delete_review
+    delete_review: state.delete_review,
+    edit_review: state.edit_review
 });
 
-export default connect(mapStateToProps, { get_pic, update_user, getItems, delete_review })(MyProfile);
+export default connect(mapStateToProps, { get_pic, update_user, getItems, delete_review, edit_review })(MyProfile);

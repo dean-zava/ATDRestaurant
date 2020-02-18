@@ -1,10 +1,14 @@
 import axios from 'axios';
-import { GET_ITEMS, ADD_ITEM, DELETE_ITEM, ITEMS_LOADING, GET_ALL_USERS, DEL_REVIEW } from './types';
+import { GET_ITEMS, ADD_ITEM, DELETE_ITEM, ITEMS_LOADING, GET_ALL_USERS } from './types';
 import { tokenConfig } from './authActions';
 import { returnErrors } from './errorActions';
 
-export const delete_review = (review_to_edit) => dispatch  => {
-    axios.post('/api/Restaurants/delete_review', review_to_edit)
+export const edit_review = (review_to_edit) => dispatch => {
+    axios.post('/api/Restaurants/edit_review', review_to_edit)
+}
+
+export const delete_review = (review_to_delete) => dispatch  => {
+    axios.post('/api/Restaurants/delete_review', review_to_delete)
     
 }
 

@@ -15,4 +15,3 @@ export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 export const QUERY_USER = 'QUERY_USER';
 export const IMAGE_SUCCESS = 'IMAGE_SUCCESS';
 export const GET_ALL_USERS = 'GET_ALL_USERS';
-export const DEL_REVIEW = 'DEL_REVIEW';
