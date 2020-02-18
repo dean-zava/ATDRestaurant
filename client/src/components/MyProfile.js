@@ -160,8 +160,8 @@ class MyProfile extends Component {
 
 
         const reviews = Array.isArray(zipped_restaurant_arr) ? zipped_restaurant_arr.map(rev_list => rev_list[0].map( rev=> {return {...rev, username: rev_list[1],
-                        delete: <Button onClick={() => this.deleteReview(rev, rev_list[1])}>Delete</Button>,
-                        edit:  <Button onClick={() => this.editToggle(rev, rev_list[1])}>Edit</Button>} })).flat() : '';
+                        delete: <Button onClick={() =>!qs_user.location ?  this.deleteReview(rev, rev_list[1]) : '' }>Delete</Button>,
+                        edit:  <Button onClick={() =>!qs_user.location ?  this.editToggle(rev, rev_list[1]) : '' }>Edit</Button>} })).flat() : '';
  
         let picture_to_Show = null
         if (user_pic) {
