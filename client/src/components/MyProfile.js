@@ -163,11 +163,20 @@ class MyProfile extends Component {
                         delete: <Button onClick={() => this.deleteReview(rev, rev_list[1])}>Delete</Button>,
                         edit:  <Button onClick={() => this.editToggle(rev, rev_list[1])}>Edit</Button>} })).flat() : '';
  
+        let picture_to_Show = null
+        if (user_pic) {
+            if (user_pic.file.includes("https://platform-lookaside.fbsbx.com/")) {
+             picture_to_Show = user_pic.file
+            }
+        else {
+             picture_to_Show = `http://localhost:5000/${user_pic.file.replace("public\\", "")}`
+            }    
+        }
 
         const view_page = (
                 <div>
                 <ListGroup>
-                <img src={ user_pic ? `http://localhost:5000/${user_pic.file.replace("public\\", "")}` : '' }
+                <img src={ user_pic && picture_to_Show }
                                  width="200" height="100"/>
                 <ListGroupItem>{user ? `username: ${user.name}` : '' }</ListGroupItem>
                 <ListGroupItem>{user ? `location: ${user.location}` : '' }</ListGroupItem>
@@ -193,50 +202,50 @@ class MyProfile extends Component {
                                 label: 'Restaurant Name',
                                 field: 'username',
                                 sort: 'asc',
-                                width: 150
+                                width: 100
                                 },
                             {
                                 label: 'Bathroom Raiting',
                                 field: 'bathroom_raiting',
                                 sort: 'asc',
-                                width: 150
+                                width: 100
                                 },
                                 {
                                 label: 'Staff Kindness',
                                 field: 'staff_kindness',
                                 sort: 'asc',
-                                width: 150
+                                width: 100
                                 },
                                 {
                                 label: 'Cleanliness',
                                 field: 'cleanliness',
                                 sort: 'asc',
-                                width: 150
+                                width: 100
                                 },
                                 {
                                 label: 'Food Quality',
                                 field: 'food_quality',
                                 sort: 'asc',
-                                width: 150
+                                width: 100
                                 },
                                 {
                                 label: 'delete',
                                 field: 'delete',
                                 sort: 'asc',
-                                width: 150
+                                width: 100
                                 },
                                 {
                                 label: 'edit',
                                 field: 'edit',
                                 sort: 'asc',
-                                width: 150
+                                width: 100
                                 },
 
                         ],
                         
                         rows: reviews
                     }
-                } /> 
+                } style={{width:1500}}/> 
                  :''}
 
               </div>

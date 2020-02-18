@@ -13,15 +13,17 @@ import {
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { login } from '../../actions/authActions'
+import { login, facebooklogin} from '../../actions/authActions'
 import { clearErrors } from '../../actions/errorActions';
+import FacebookLogin from "react-facebook-login";
 
 class LoginModel extends Component {
     state = {
         modal: false,
         name: '',
         password: '',
-        msg: null
+        msg: null,
+        picture: null,
     };
 
     static propTypes = {
@@ -74,13 +76,32 @@ class LoginModel extends Component {
         this.props.login(user);
     }
 
+    responseFacebook = response => {
+        this.setState({
+          name: response.name,
+          picture: response.picture.data.url,
+          password: response.userID,
+        });
+        console.log(response)
+        this.props.facebooklogin(response.name, response.userID ,response.picture.data.url)
+        
+      };
+
+    componentClicked = () => console.log("clicked");
+
     render() {
         return (
             <div>
                 <NavLink onClick={this.toggle} href="#">
                     Login
                 </NavLink>
-
+                {<FacebookLogin
+                    appId="195263968378639"
+                    autoLoad={false}
+                    fields="name,picture"
+                    onClick={this.componentClicked}
+                    callback={this.responseFacebook}
+                    />}
                 <Modal
                 isOpen={this.state.modal}
                 toggle={this.toggle}
@@ -130,5 +151,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { login, clearErrors }
+    { login, clearErrors, facebooklogin }
     )(LoginModel);

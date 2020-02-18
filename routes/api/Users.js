@@ -20,6 +20,74 @@ var storage = multer.diskStorage({
 })
 var upload = multer({ storage: storage }).single('file')
 
+router.post('/facebook_login', function (req, res) {
+    const { name, password, picture_url} = req.body;
+    User.findOne( {name: name})
+    .then (user => {
+        if (user) {
+            bcrypt.compare(password, user.password)
+            .then(isMatch => {
+                if(!isMatch) return res.status(400).json({ msg: 'Invalid credentials' })
+
+                jwt.sign(
+                    { id: user.id },
+                    config.get('jwtSecret'),
+                    { expiresIn: 3600 },
+                    (err, token) => {
+                        if(err) throw err;
+                        res.json({
+                            token,
+                            user: {
+                                id: user.id,
+                                name: user.name
+                            }
+                        });
+                      }
+                    )
+                  })
+        }
+        else {
+        const newUser = new User({
+            name,
+            password,
+            file: picture_url,
+            location: 'Insert'
+
+        });
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(newUser.password, salt, (err, hash) => {
+                if(err) throw err;
+                newUser.password = hash;
+                newUser.save()
+                    .then(user => {
+
+                        jwt.sign(
+                            { id: user.id },
+                            config.get('jwtSecret'),
+                            { expiresIn: 3600 },
+                            (err, token) => {
+                                if(err) throw err;
+                                res.json({
+                                    token,
+                                    user: {
+                                        id: user.id,
+                                        name: user.name,
+                                        file: user.file,
+                                        location: user.location
+                                    }
+                                });
+                            });
+                            }
+                        )
+
+
+            })
+        })}
+    })
+    
+    
+});
+
 router.post('/upload_pic',function(req, res) {
     upload(req, res, function (err) {
            if (err instanceof multer.MulterError) {

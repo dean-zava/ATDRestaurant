@@ -99,6 +99,30 @@ export const register = ({ name, password, location}, file) => dispatch => {
         })
 }
 
+export const facebooklogin = ( name, password, picture_url ) => dispatch => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    const body = JSON.stringify({ name, password, picture_url });
+
+    axios.post('/api/users/facebook_login', body, config)
+        .then(res => dispatch({
+            type: LOGIN_SUCCESS,
+            payload: res.data
+        }))
+        .catch(err => {
+            dispatch(
+              returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL')
+            );
+            dispatch({
+              type: LOGIN_FAIL
+            });
+          });
+      };
+
 export const login = ({ name, password }) => dispatch => {
         const config = {
             headers: {
