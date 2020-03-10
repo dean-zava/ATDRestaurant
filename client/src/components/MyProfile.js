@@ -22,7 +22,9 @@ class MyProfile extends Component {
         new_bathroom_raiting: 3,
         new_staff_kindness: 3,
         new_cleanliness: 3,
-        new_food_quality: 3
+        new_food_quality: 3,
+        new_drive_quality: 0,
+        new_delivery_quality: 0
         
     }
 
@@ -80,14 +82,16 @@ class MyProfile extends Component {
     }
 
     editReview = () => {
-        const { new_bathroom_raiting, new_staff_kindness, new_cleanliness, new_food_quality, oldRev, restaurant_name} = this.state;
+        const { new_bathroom_raiting, new_staff_kindness, new_cleanliness, new_food_quality, new_drive_quality, new_delivery_quality, oldRev, restaurant_name} = this.state;
         const review_to_edit = {
             oldRev,
             restaurant_name,
             new_bathroom_raiting,
             new_staff_kindness,
             new_cleanliness,
-            new_food_quality
+            new_food_quality,
+            new_drive_quality,
+            new_delivery_quality
         } 
         this.props.edit_review(review_to_edit)
         window.location.reload()
@@ -109,10 +113,18 @@ class MyProfile extends Component {
         this.setState({new_food_quality: nextValue});
       }
 
+    onDriveQualityClick(nextValue) {
+        this.setState({new_drive_quality: nextValue});
+      }
+
+    onDeliveryQualityClick(nextValue) {
+        this.setState({new_delivery_quality: nextValue});
+      }
+
     render() {
         const { items } = this.props.item;
         const { user_pic } = this.props.auth;
-        const { new_bathroom_raiting, new_staff_kindness, new_cleanliness, new_food_quality } = this.state;
+        const { new_bathroom_raiting, new_staff_kindness, new_cleanliness, new_food_quality,new_drive_quality , new_delivery_quality } = this.state;
         let auth_user = this.props.auth.user;
         let qs_user = qs.parse(this.props.location.search);
         let user = qs_user.location ? 
@@ -120,10 +132,11 @@ class MyProfile extends Component {
                 name: qs_user['?name'],
                 location: qs_user.location
             }
-            : auth_user;
+            : auth_user;    
         if(user && !user_pic) { this.get_pic_path(user.name) }
 
         const editable_page  = (
+            user?
         <Form>
       <FormGroup>
         <Label for="Username">Username</Label>
@@ -131,7 +144,7 @@ class MyProfile extends Component {
           type="text"
           name="username"
           id="username"
-          placeholder="Enter Username"
+          placeholder={user.name}
           onChange={this.onChange}
         />
       </FormGroup>
@@ -141,14 +154,14 @@ class MyProfile extends Component {
           type="text"
           name="location"
           id="location"
-          placeholder="Enter Location"
+          placeholder={user.location}
           onChange={this.onChange}
         />
       </FormGroup>
         <Button variant="primary" type="submit" onClick={this.update_user}>
             Submit
         </Button>
-    </Form>)
+    </Form> :'')
    
 
         const reviews_by_username =user && items.length ? items.map( ({reviews}) => reviews.filter( ({username}) => username === user.name )) :'';
@@ -225,6 +238,18 @@ class MyProfile extends Component {
                                 {
                                 label: 'Food Quality',
                                 field: 'food_quality',
+                                sort: 'asc',
+                                width: 100
+                                },
+                                {
+                                label: 'Drive-thru Quality',
+                                field: 'drive_quality',
+                                sort: 'asc',
+                                width: 100
+                                },
+                                {
+                                label: 'Delivery Quality',
+                                field: 'delivery_quality',
                                 sort: 'asc',
                                 width: 100
                                 },
@@ -311,6 +336,32 @@ class MyProfile extends Component {
                             starCount={5}
                             value={new_food_quality}
                             onStarClick={this.onFoodQualityClick.bind(this)}
+                            />
+                        </div>
+                        </Col>
+                        </Row>
+                        <Row>
+                            <Col><Label for="Drive-thru Quality">Drive-thru Quality:</Label></Col>
+                        <Col>
+                        <div>   
+                            <StarRatingComponent 
+                            name="rate5" 
+                            starCount={5}
+                            value={new_drive_quality}
+                            onStarClick={this.onDriveQualityClick.bind(this)}
+                            />
+                        </div>
+                        </Col>
+                        </Row>
+                        <Row>
+                            <Col><Label for="Delivery Quality">Delivery Quality:</Label></Col>
+                        <Col>
+                        <div>   
+                            <StarRatingComponent 
+                            name="rate6" 
+                            starCount={5}
+                            value={new_delivery_quality}
+                            onStarClick={this.onDeliveryQualityClick.bind(this)}
                             />
                         </div>
                         </Col>

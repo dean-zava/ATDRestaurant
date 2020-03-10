@@ -6,12 +6,12 @@ const auth = require('../../middleware/auth');
 const Restaurant = require('../../models/Restaurant');
 
 let del_once = false
-function removeOne(rev, username, bathroom_raiting, staff_kindness, cleanliness, food_quality) {
+function removeOne(rev, username, bathroom_raiting, staff_kindness, cleanliness, food_quality, drive_quality, delivery_quality) {
     if (del_once) {
         return true
     }
     else if (rev.username == username && rev.bathroom_raiting == bathroom_raiting && rev.staff_kindness == staff_kindness && 
-        rev.cleanliness==cleanliness && rev.food_quality==food_quality) {
+        rev.cleanliness==cleanliness && rev.food_quality==food_quality && rev.drive_quality==drive_quality && rev.delivery_quality==delivery_quality) {
             del_once = true
             return false
         }
@@ -50,13 +50,15 @@ router.delete('/:id', auth, (req, res) => {
 
 router.post('/add_review', (req) => {
     
-    const {bathroom_raiting, staff_kindness, cleanliness, food_quality, username, id} = req.body
+    const {bathroom_raiting, staff_kindness, cleanliness, food_quality, drive_quality, delivery_quality, username, id} = req.body
     const newReview = {
         username,
         bathroom_raiting,
         staff_kindness,
         cleanliness,
-        food_quality
+        food_quality,
+        drive_quality,
+        delivery_quality
     }
 
     Restaurant.updateOne( {_id: id}, {
@@ -67,10 +69,10 @@ router.post('/add_review', (req) => {
 });
 
 router.post('/delete_review', (req) => {
-    const {username, bathroom_raiting, staff_kindness, cleanliness, food_quality} = req.body.review
+    const {username, bathroom_raiting, staff_kindness, cleanliness, food_quality, drive_quality, delivery_quality} = req.body.review
     Restaurant.findOne( ({name: req.body.rest_name}))
     .then( function(rest) {
-     let matches = rest.reviews.filter(rev => removeOne(rev, username, bathroom_raiting, staff_kindness, cleanliness, food_quality))
+     let matches = rest.reviews.filter(rev => removeOne(rev, username, bathroom_raiting, staff_kindness, cleanliness, food_quality, drive_quality, delivery_quality))
      rest.reviews = matches
      Restaurant.updateOne ( ({name: req.body.rest_name}) , {
         reviews: matches
@@ -80,13 +82,13 @@ router.post('/delete_review', (req) => {
 })
 
 router.post('/edit_review', (req) => {
-    const {username, bathroom_raiting, staff_kindness, cleanliness, food_quality} = req.body.oldRev;
+    const {username, bathroom_raiting, staff_kindness, cleanliness, food_quality, drive_quality, delivery_quality} = req.body.oldRev;
     Restaurant.findOne( ({name: req.body.restaurant_name}))
     .then( function(rest) {
-     let matches = rest.reviews.filter(rev => removeOne(rev, username, bathroom_raiting, staff_kindness, cleanliness, food_quality))
+     let matches = rest.reviews.filter(rev => removeOne(rev, username, bathroom_raiting, staff_kindness, cleanliness, food_quality, drive_quality, delivery_quality))
      rest.reviews = matches
      newRev = {username: username, bathroom_raiting: req.body.new_bathroom_raiting, staff_kindness: req.body.new_staff_kindness,
-               cleanliness: req.body.new_cleanliness, food_quality: req.body.new_food_quality}
+               cleanliness: req.body.new_cleanliness, food_quality: req.body.new_food_quality, drive_quality: req.body.new_drive_quality, delivery_quality: req.body.new_delivery_quality}
      matches.push(newRev)
      Restaurant.updateOne ( ({name: req.body.restaurant_name}) , {
         reviews: matches

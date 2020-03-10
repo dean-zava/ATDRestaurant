@@ -39,6 +39,8 @@ class Restaurant extends Component {
         staff_kindness: 3,
         cleanliness: 3,
         food_quality: 3,
+        drive_quality: 0,
+        delivery_quality: 0,
         avgRate: 0
     }
 
@@ -62,27 +64,36 @@ class Restaurant extends Component {
         });
     }
 
-    onBathroomClick(nextValue, prevValue, name) {
+    onBathroomClick(nextValue) {
         this.setState({bathroom_raiting: nextValue});
       }
 
-    onStaffClick(nextValue, prevValue, name) {
+    onStaffClick(nextValue) {
         this.setState({staff_kindness: nextValue});
       }
 
-    onCleanlinessClick(nextValue, prevValue, name) {
+    onCleanlinessClick(nextValue) {
         this.setState({cleanliness: nextValue});
       }
 
-    onFoodQualityClick(nextValue, prevValue, name) {
+    onFoodQualityClick(nextValue) {
         this.setState({food_quality: nextValue});
       }
+
+    onDriveQualityClick(nextValue) {
+        this.setState({drive_quality: nextValue});
+    }
+
+    onDeliveryQualityClick(nextValue) {
+        this.setState({delivery_quality: nextValue});
+    }
 
       onSubmit = (id) => {
         const {name} = this.props.user;
 
         const new_review = {bathroom_raiting: this.state.bathroom_raiting, staff_kindness: this.state.staff_kindness,
-            cleanliness: this.state.cleanliness, food_quality: this.state.food_quality, username: name, id}
+            cleanliness: this.state.cleanliness, food_quality: this.state.food_quality, drive_quality: this.state.drive_quality,
+            delivery_quality: this.state.delivery_quality, username: name, id}
 
         this.props.add_review(new_review);
     }
@@ -91,14 +102,14 @@ class Restaurant extends Component {
         this.setState({ restaurant_filter: e.target.value });
     }
 
-    onChangeAvgStar(nextValue, prevValue, name) {
+    onChangeAvgStar(nextValue) {
         this.setState({ avgRate: nextValue });
     }
 
     render() {
         
         const { items, all_users } = this.props.item;
-        const { bathroom_raiting, staff_kindness, cleanliness, food_quality } = this.state;
+        const { bathroom_raiting, staff_kindness, cleanliness, food_quality, drive_quality, delivery_quality } = this.state;
         const searched_user = qs.parse(this.props.location.search)['?search_user'];
 
         return( searched_user ? 
@@ -275,6 +286,32 @@ class Restaurant extends Component {
                                                 </div>
                                                 </Col>
                                                 </Row>
+                                                <Row>
+                                                    <Col><Label for="Food Quality">Drive-thru Quality:</Label></Col>
+                                                <Col>
+                                                <div>   
+                                                    <StarRatingComponent 
+                                                    name="rate1" 
+                                                    starCount={5}
+                                                    value={drive_quality}
+                                                    onStarClick={this.onDriveQualityClick.bind(this)}
+                                                    />
+                                                </div>
+                                                </Col>
+                                                </Row>
+                                                <Row>
+                                                    <Col><Label for="Food Quality">Delivery Quality:</Label></Col>
+                                                <Col>
+                                                <div>   
+                                                    <StarRatingComponent 
+                                                    name="rate1" 
+                                                    starCount={5}
+                                                    value={delivery_quality}
+                                                    onStarClick={this.onDeliveryQualityClick.bind(this)}
+                                                    />
+                                                </div>
+                                                </Col>
+                                                </Row>
                                                 </Container>
                                                     <Button
                                                         color="dark"
@@ -321,6 +358,18 @@ class Restaurant extends Component {
                                                   {
                                                     label: 'Food Quality',
                                                     field: 'food_quality',
+                                                    sort: 'asc',
+                                                    width: 150
+                                                  },
+                                                  {
+                                                    label: 'Drive-thru Quality',
+                                                    field: 'drive_quality',
+                                                    sort: 'asc',
+                                                    width: 150
+                                                  },
+                                                  {
+                                                    label: 'Delivery Quality',
+                                                    field: 'delivery_quality',
                                                     sort: 'asc',
                                                     width: 150
                                                   },
